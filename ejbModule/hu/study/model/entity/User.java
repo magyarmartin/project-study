@@ -2,23 +2,22 @@ package hu.study.model.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "USER")
-public class User implements Serializable {
+public class User extends Rateable implements Serializable  {
 
 	private static final long serialVersionUID = 7401138290924244636L;
-	
-	@Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Integer id;
 	
 	@Column(name = "first_name", length = 20)
 	private String firstName;
@@ -32,22 +31,23 @@ public class User implements Serializable {
 	@Column(name = "password", length = 16)
 	private String password;
 	
-	@Column(name = "description", length = 500)
+	@Column(name = "description", length = 500, nullable = true)
 	private String description;
 	
 	@Column(name = "instructor")
 	private boolean instructor;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Course> subscribedCourses;
+	
 	@Column(name = "registration_date")
 	private Date registrationDate;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
+	private List<Course> ownCourses;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+	private List<Comment> comments;
 
 	public String getFirstName() {
 		return firstName;
@@ -103,6 +103,30 @@ public class User implements Serializable {
 
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+
+	public List<Course> getSubscribedCourses() {
+		return subscribedCourses;
+	}
+
+	public void setSubscribedCourses(List<Course> subscribedCourses) {
+		this.subscribedCourses = subscribedCourses;
+	}
+
+	public List<Course> getOwnCourses() {
+		return ownCourses;
+	}
+
+	public void setOwnCourses(List<Course> ownCourses) {
+		this.ownCourses = ownCourses;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 }

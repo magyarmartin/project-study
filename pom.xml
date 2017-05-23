@@ -4,6 +4,14 @@
   <artifactId>project-study-bl</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>ejb</packaging>
+  <dependencies>
+  	<dependency>
+    	<groupId>javax.persistence</groupId>
+    	<artifactId>persistence-api</artifactId>
+    	<version>1.0.2</version>
+    	<scope>provided</scope>
+	</dependency>
+  </dependencies>
   <build>
     <sourceDirectory>ejbModule</sourceDirectory>
     <resources>

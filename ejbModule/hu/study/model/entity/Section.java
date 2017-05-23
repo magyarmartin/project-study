@@ -15,10 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "COURSE")
-public class Course extends Rateable implements Serializable {
+@Table(name = "SECTION")
+public class Section extends Rateable implements Serializable {
 
-	private static final long serialVersionUID = -1591302474273896650L;
+	private static final long serialVersionUID = -371066170686399849L;
 	
 	@Column(name = "name", length = 30)
 	private String name;
@@ -26,15 +26,15 @@ public class Course extends Rateable implements Serializable {
 	@Column(name = "description", length = 500)
 	private String description;
 	
+	@ManyToOne
+	@JoinColumn(name = "course_id")
+	private Course course;
+	
 	@Column(name = "creation_date")
 	private Date creationDate;
 	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User creator;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
-	private List<Section> sections;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "baseSection")
+	private List<Lesson> lessons;
 
 	public String getName() {
 		return name;
@@ -52,6 +52,14 @@ public class Course extends Rateable implements Serializable {
 		this.description = description;
 	}
 
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
 	public Date getCreationDate() {
 		return creationDate;
 	}
@@ -60,20 +68,12 @@ public class Course extends Rateable implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public User getCreator() {
-		return creator;
+	public List<Lesson> getLessons() {
+		return lessons;
 	}
 
-	public void setCreator(User creator) {
-		this.creator = creator;
+	public void setLessons(List<Lesson> lessons) {
+		this.lessons = lessons;
 	}
-
-	public List<Section> getSections() {
-		return sections;
-	}
-
-	public void setSections(List<Section> sections) {
-		this.sections = sections;
-	}
-
+	
 }

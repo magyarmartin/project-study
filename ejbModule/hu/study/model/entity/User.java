@@ -7,10 +7,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.NamedQuery;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -48,6 +48,37 @@ public class User extends Rateable implements Serializable  {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
 	private List<Comment> comments;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "PROGRESS",
+	        joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ),
+	        inverseJoinColumns = @JoinColumn( name = "lesson_id", referencedColumnName = "id" )
+	)
+	private List<Section> finishedLessons;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "PROGRESS",
+	        joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ),
+	        inverseJoinColumns = @JoinColumn( name = "section_id", referencedColumnName = "id" )
+	)
+	private List<Comment> finishedSections;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "PROGRESS",
+	        joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ),
+	        inverseJoinColumns = @JoinColumn( name = "course_id", referencedColumnName = "id" )
+	)
+	private List<Course> finishedCourses;
+	
+	public User() {}
+	
+	public User(String email, String pwd) {
+		this.email = email;
+		this.password = pwd;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -127,6 +158,39 @@ public class User extends Rateable implements Serializable  {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public List<Section> getFinishedLessons() {
+		return finishedLessons;
+	}
+
+	public void setFinishedLessons(List<Section> finishedLessons) {
+		this.finishedLessons = finishedLessons;
+	}
+
+	public List<Comment> getFinishedSections() {
+		return finishedSections;
+	}
+
+	public void setFinishedSections(List<Comment> finishedSections) {
+		this.finishedSections = finishedSections;
+	}
+
+	public List<Course> getFinishedCourses() {
+		return finishedCourses;
+	}
+
+	public void setFinishedCourses(List<Course> finishedCourses) {
+		this.finishedCourses = finishedCourses;
+	}
+
+	@Override
+	public String toString() {
+		return "User [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", password=" + password
+				+ ", description=" + description + ", instructor=" + instructor + ", subscribedCourses="
+				+ subscribedCourses + ", registrationDate=" + registrationDate + ", ownCourses=" + ownCourses
+				+ ", comments=" + comments + ", finishedLessons=" + finishedLessons + ", finishedSections="
+				+ finishedSections + ", finishedCourses=" + finishedCourses + ", id=" + id + "]";
 	}
 
 }

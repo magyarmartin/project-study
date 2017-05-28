@@ -91,4 +91,40 @@ public class Rating implements Serializable {
 		this.target = target;
 	}
 
+	@Override
+	public String toString() {
+		return "Rating [id=" + id + ", score=" + score + ", description=" + description + ", creationDate="
+				+ creationDate + ", owner=" + owner + ", target=" + target + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Rating)) {
+			return false;
+		}
+		Rating other = (Rating) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		return true;
+	}
+
 }

@@ -87,5 +87,12 @@ public class Lesson extends Rateable implements Serializable {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+
+	@Override
+	public String toString() {
+		return "Lesson [name=" + name + ", contentText=" + contentText + ", videoLocation=" + videoLocation + ", next="
+				+ next + ", baseSection=" + baseSection + ", creationDate=" + creationDate + ", comments=" + comments
+				+ ", id=" + id + "]";
+	}
 	
 }

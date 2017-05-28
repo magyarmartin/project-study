@@ -76,4 +76,10 @@ public class Course extends Rateable implements Serializable {
 		this.sections = sections;
 	}
 
+	@Override
+	public String toString() {
+		return "Course [name=" + name + ", description=" + description + ", creationDate=" + creationDate + ", creator="
+				+ creator + ", sections=" + sections + ", id=" + id + "]";
+	}
+
 }

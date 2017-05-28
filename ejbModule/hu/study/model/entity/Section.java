@@ -75,5 +75,11 @@ public class Section extends Rateable implements Serializable {
 	public void setLessons(List<Lesson> lessons) {
 		this.lessons = lessons;
 	}
+
+	@Override
+	public String toString() {
+		return "Section [name=" + name + ", description=" + description + ", course=" + course + ", creationDate="
+				+ creationDate + ", lessons=" + lessons + ", id=" + id + "]";
+	}
 	
 }

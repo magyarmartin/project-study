@@ -3,3 +3,13 @@ build/
 target/
 .classpath
 .project
+project-study/.settings/
+project-study/build/
+project-study/target/
+project-study/.classpath
+project-study/.project
+project-study/project-study-bl/build/
+project-study/project-study-bl/target/
+project-study/project-study-bl/.settings/
+project-study/project-study-bl/.classpath
+project-study/project-study-bl/.project

@@ -4,18 +4,14 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "COURSE")
+@NamedQueries({
+		@NamedQuery(name="Course.findByName", query="select c from Course c where name = :name"),
+		@NamedQuery(name="Course.findLikeName", query="select c from Course c where name like :name")
+})
 public class Course extends Rateable implements Serializable {
 
 	private static final long serialVersionUID = -1591302474273896650L;

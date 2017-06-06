@@ -5,18 +5,14 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>ejb</packaging>
   <dependencies>
-  	<dependency>
-    	<groupId>javax.persistence</groupId>
-    	<artifactId>persistence-api</artifactId>
-    	<version>1.0.2</version>
-    	<scope>provided</scope>
-	</dependency>
-	<dependency>
-    	<groupId>javax.validation</groupId>
-    	<artifactId>validation-api</artifactId>
-    	<version>1.1.0.Final</version>
-    	<scope>provided</scope>
-	</dependency>
+    <!-- Own -->
+    <dependency>
+        <groupId>hu.magyarm.prostu</groupId>
+        <artifactId>project-study-if</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- External -->
 	<dependency>
     	<groupId>javax</groupId>
     	<artifactId>javaee-api</artifactId>
@@ -30,14 +26,33 @@
   	<dependency>
     	<groupId>org.apache.logging.log4j</groupId>
     	<artifactId>log4j-core</artifactId>
-    	<version>2.8.2</version>
+        <version>2.8.2</version>
   	</dependency>
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>5.2.10.Final</version>
+    </dependency>
+
+      <!-- testing -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>1.4.192</version>
+        <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
-    <sourceDirectory>ejbModule</sourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>
-        <directory>ejbModule</directory>
+        <directory>src/main/java</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>

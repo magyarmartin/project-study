@@ -4,17 +4,11 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.NamedQuery;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "USER")
+@NamedQuery(name="User.findByEmail", query="SELECT u FROM User u WHERE u.email = :email")
 public class User extends Rateable implements Serializable  {
 
 	private static final long serialVersionUID = 7401138290924244636L;

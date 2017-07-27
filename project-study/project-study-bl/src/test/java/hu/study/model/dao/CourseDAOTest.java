@@ -2,7 +2,8 @@ package hu.study.model.dao;
 
 import hu.study.model.JPAHibernateTest;
 import hu.study.model.entity.Course;
-import org.junit.Assert;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,61 +24,84 @@ public class CourseDAOTest extends JPAHibernateTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testFind() {
+    public void shouldPresentIfIdExists() {
         Optional<Course> course = courseDAO.find(-1);
-        Assert.assertEquals("It should be present", true, course.isPresent());
-
-        course = courseDAO.find(2);
-        Assert.assertEquals("It shouldn't be present", false, course.isPresent());
+        assertThat(course.isPresent(), is(true));
     }
 
     @Test
-    public void testFindByName() {
+    public void shouldNotPresentIfIdNotExists() {
+        Optional<Course> course = courseDAO.find(2);
+        assertThat(course.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldPresentIfNameExists() {
         Optional<Course> course = courseDAO.find("Coding 101");
-        Assert.assertEquals("It should be present", true, course.isPresent());
-
-        course = courseDAO.find("Coding 111");
-        Assert.assertEquals("It shouldn't be present", false, course.isPresent());
+        assertThat(course.isPresent(), is(true));
     }
 
     @Test
-    public void testFildLikeName() {
+    public void shouldNotPresentIfNameNotExists() {
+        Optional<Course> course = courseDAO.find("Coding 111");
+        assertThat(course.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldHaveSizeGreaterThanZeroIfThereAreCoursesWithNameLikeTheParameter() {
         List<Course> courses = courseDAO.findLikeName("Something");
-        Assert.assertEquals("The list should be empty", 0, courses.size());
+        assertThat(courses.size(), is(0));
 
         courses = courseDAO.findLikeName("ding");
-        Assert.assertEquals(2, courses.size());
+        assertThat(courses.size(), greaterThan(0));
     }
 
     @Test
-    public void testCreate() {
+    public void sholdBeInTheDBIfCreatedAndFilledWithCreationDate() {
         Course course = new Course();
         course.setName("How to make fire");
         courseDAO.create(course);
         Optional<Course> foundCourse = courseDAO.find(course.getId());
-        Assert.assertEquals("Previously inserted row should be present", true, foundCourse.isPresent());
-        Assert.assertNotNull("Creation date should be filled", foundCourse.get().getCreationDate());
+        assertThat(foundCourse.isPresent(), is(true));
+        assertThat(foundCourse.get().getCreationDate(), is(notNullValue()));
 
         thrown.expect(IllegalArgumentException.class);
         courseDAO.create(course);
     }
 
     @Test
-    public void testUpdate() {
+    public void shouldThrowExceptionIfTheNameIfAlreadyExists() {
+        Course course = new Course();
+        course.setName("Coding 111");
+        courseDAO.create(course);
+
+        thrown.expect(IllegalArgumentException.class);
+        courseDAO.create(course);
+    }
+
+    @Test
+    public void shouldUpdateTheGivenCourse() {
         final String description = "Some description";
         Course course = courseDAO.find(-1).get();
         course.setDescription(description);
         courseDAO.update(course);
 
         Course foundCourse = courseDAO.find(course.getId()).get();
-        Assert.assertEquals("Description should be foo", description, foundCourse.getDescription());
+        assertThat(foundCourse.getDescription(), is(equalTo(description)));
     }
 
     @Test
-    public void testDelete() {
+    public void shouldThrowExceptionIfTheCourseIsNotAlreadyExists() {
+        thrown.expect(IllegalArgumentException.class);
+        Course course = new Course();
+        courseDAO.update(course);
+    }
+
+    @Test
+    public void shouldNotPresentAfterDelete() {
         Course course = courseDAO.find(-3).get();
         courseDAO.delete(course);
         Optional<Course> foundCourse = courseDAO.find(-3);
-        Assert.assertEquals("It shouldn't be present", false, foundCourse.isPresent());
+        assertThat(foundCourse.isPresent(), is(false));
     }
 }

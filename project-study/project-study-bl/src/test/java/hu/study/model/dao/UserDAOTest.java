@@ -10,6 +10,9 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 public class UserDAOTest extends JPAHibernateTest {
 
     private static UserDAO userDAO;
@@ -23,55 +26,75 @@ public class UserDAOTest extends JPAHibernateTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testFind() {
+    public void shouldPresentIfIdExists() {
         Optional<User> user = userDAO.find(-1);
-        Assert.assertEquals("It should be present", true, user.isPresent());
-
-        user = userDAO.find(2);
-        Assert.assertEquals("It shouldn't be present", false, user.isPresent());
+        assertThat(user.isPresent(), is(true));
     }
 
     @Test
-    public void testFindByEmail() {
+    public void shouldNotPresentIfIdNotExists() {
+        Optional<User> user = userDAO.find(2);
+        assertThat(user.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldPresentIfEmailExists() {
         Optional<User> user = userDAO.find("foo@bar.com");
-        Assert.assertEquals("It should be present", true, user.isPresent());
-
-        user = userDAO.find("fooo@foo.com");
-        Assert.assertEquals("It shouldn't be present", false, user.isPresent());
+        assertThat(user.isPresent(), is(true));
     }
 
     @Test
-    public void testCreate() {
+    public void shouldNotPresentIfEmailNotExists() {
+        Optional<User> user = userDAO.find("fooo@foo.com");
+        assertThat(user.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldBeInTheDBIfCreatedAndFilledWithCreationDate() {
         User user = new User();
         user.setEmail("a@b.c");
         user.setPassword("p");
         user.setInstructor(true);
         userDAO.create(user);
         Optional<User> foundUser = userDAO.find(user.getId());
-        Assert.assertEquals("Previously inserted row should be present", true, foundUser.isPresent());
-        Assert.assertNotNull("Registration date should be filled", foundUser.get().getRegistrationDate());
+        assertThat(foundUser.isPresent(), is(true));
+        assertThat(foundUser.get().getRegistrationDate(), is(notNullValue()));
+    }
+
+    @Test
+    public void shouldThrowExceptionIfTheEmailIfAlreadyExists() {
+        User user = new User();
+        user.setEmail("foo@bar.com");
 
         thrown.expect(IllegalArgumentException.class);
         userDAO.create(user);
     }
 
     @Test
-    public void testUpdate() {
+    public void shouldUpdateTheGivenUser() {
         final String firstName = "Foo";
         User user = userDAO.find(-1).get();
         user.setFirstName(firstName);
         userDAO.update(user);
 
         User foundUser = userDAO.find(user.getId()).get();
-        Assert.assertEquals("Users name should be foo", firstName, foundUser.getFirstName());
+        assertThat(foundUser.getFirstName(), is(equalTo(firstName)));
     }
 
     @Test
-    public void testDelete() {
+    public void shouldThrowExceptionIfTheCourseIsNotAlreadyExists() {
+        thrown.expect(IllegalArgumentException.class);
+
+        User user = new User();
+        userDAO.update(user);
+    }
+
+    @Test
+    public void shouldNotPresentAfterDelete() {
         User user = userDAO.find(-2).get();
         userDAO.delete(user);
         Optional<User> foundUser = userDAO.find(-2);
-        Assert.assertEquals("It shouldn't be present", false, foundUser.isPresent());
+        assertThat(foundUser.isPresent(), is(false));
     }
 
 }

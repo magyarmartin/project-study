@@ -12,7 +12,7 @@ import java.sql.Date;
 import java.util.Optional;
 
 /**
- * Created by martin4955 on 2017. 06. 06..
+ * DAO object for {@link Section}
  */
 public class SectionDAO extends BasicDAO<Section> {
 

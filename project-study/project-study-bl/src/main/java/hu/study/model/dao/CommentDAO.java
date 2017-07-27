@@ -1,7 +1,6 @@
 package hu.study.model.dao;
 
 import hu.study.model.entity.Comment;
-import hu.study.model.entity.Section;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +8,9 @@ import javax.persistence.EntityManager;
 import java.sql.Date;
 import java.util.Optional;
 
+/**
+ * DAO object for {@link Comment}
+ */
 public class CommentDAO extends BasicDAO<Comment>{
 
     private static final Logger LOG = LogManager.getLogger( CommentDAO.class );

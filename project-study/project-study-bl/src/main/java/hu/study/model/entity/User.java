@@ -9,9 +9,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USER")
 @NamedQuery(name="User.findByEmail", query="SELECT u FROM User u WHERE u.email = :email")
-public class User extends Rateable implements Serializable  {
+public class User implements Serializable  {
 
 	private static final long serialVersionUID = 7401138290924244636L;
+
+	@Id
+	@GeneratedValue
+	@Column(name = "id") Integer id;
 	
 	@Column(name = "first_name", length = 20)
 	private String firstName;
@@ -22,7 +26,7 @@ public class User extends Rateable implements Serializable  {
 	@Column(name = "email", length = 30)
 	private String email;
 	
-	@Column(name = "password", length = 16)
+	@Column(name = "password", length = 100)
 	private String password;
 	
 	@Column(name = "description", length = 500, nullable = true)
@@ -30,9 +34,6 @@ public class User extends Rateable implements Serializable  {
 	
 	@Column(name = "instructor")
 	private boolean instructor;
-	
-	@OneToMany(fetch = FetchType.LAZY)
-	private List<Course> subscribedCourses;
 	
 	@Column(name = "registration_date")
 	private Date registrationDate;
@@ -42,6 +43,9 @@ public class User extends Rateable implements Serializable  {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
 	private List<Comment> comments;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+	private List<Rating> ratings;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -49,7 +53,7 @@ public class User extends Rateable implements Serializable  {
 	        joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ),
 	        inverseJoinColumns = @JoinColumn( name = "lesson_id", referencedColumnName = "id" )
 	)
-	private List<Section> finishedLessons;
+	private List<Section> startedLessons;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -57,7 +61,7 @@ public class User extends Rateable implements Serializable  {
 	        joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ),
 	        inverseJoinColumns = @JoinColumn( name = "section_id", referencedColumnName = "id" )
 	)
-	private List<Comment> finishedSections;
+	private List<Comment> startedSections;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -65,13 +69,21 @@ public class User extends Rateable implements Serializable  {
 	        joinColumns = @JoinColumn( name = "user_id", referencedColumnName = "id" ),
 	        inverseJoinColumns = @JoinColumn( name = "course_id", referencedColumnName = "id" )
 	)
-	private List<Course> finishedCourses;
+	private List<Course> startedCourses;
 	
 	public User() {}
 	
 	public User(String email, String pwd) {
 		this.email = email;
 		this.password = pwd;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -130,14 +142,6 @@ public class User extends Rateable implements Serializable  {
 		this.registrationDate = registrationDate;
 	}
 
-	public List<Course> getSubscribedCourses() {
-		return subscribedCourses;
-	}
-
-	public void setSubscribedCourses(List<Course> subscribedCourses) {
-		this.subscribedCourses = subscribedCourses;
-	}
-
 	public List<Course> getOwnCourses() {
 		return ownCourses;
 	}
@@ -155,36 +159,58 @@ public class User extends Rateable implements Serializable  {
 	}
 
 	public List<Section> getFinishedLessons() {
-		return finishedLessons;
+		return startedLessons;
 	}
 
 	public void setFinishedLessons(List<Section> finishedLessons) {
-		this.finishedLessons = finishedLessons;
+		this.startedLessons = finishedLessons;
 	}
 
 	public List<Comment> getFinishedSections() {
-		return finishedSections;
+		return startedSections;
 	}
 
 	public void setFinishedSections(List<Comment> finishedSections) {
-		this.finishedSections = finishedSections;
+		this.startedSections = finishedSections;
 	}
 
 	public List<Course> getFinishedCourses() {
-		return finishedCourses;
+		return startedCourses;
 	}
 
 	public void setFinishedCourses(List<Course> finishedCourses) {
-		this.finishedCourses = finishedCourses;
+		this.startedCourses = finishedCourses;
 	}
 
-	@Override
-	public String toString() {
-		return "User [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", password=" + password
-				+ ", description=" + description + ", instructor=" + instructor + ", subscribedCourses="
-				+ subscribedCourses + ", registrationDate=" + registrationDate + ", ownCourses=" + ownCourses
-				+ ", comments=" + comments + ", finishedLessons=" + finishedLessons + ", finishedSections="
-				+ finishedSections + ", finishedCourses=" + finishedCourses + ", id=" + id + "]";
+	public List<Rating> getRatings() {
+		return ratings;
 	}
 
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+	public List<Section> getStartedLessons() {
+		return startedLessons;
+	}
+
+	public void setStartedLessons(List<Section> startedLessons) {
+		this.startedLessons = startedLessons;
+	}
+
+	public List<Comment> getStartedSections() {
+		return startedSections;
+	}
+
+	public void setStartedSections(List<Comment> startedSections) {
+		this.startedSections = startedSections;
+	}
+
+	public List<Course> getStartedCourses() {
+		return startedCourses;
+	}
+
+	public void setStartedCourses(List<Course> startedCourses) {
+		this.startedCourses = startedCourses;
+	}
 }

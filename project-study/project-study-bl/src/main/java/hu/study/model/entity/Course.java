@@ -12,7 +12,11 @@ import javax.persistence.*;
 		@NamedQuery(name="Course.findByName", query="select c from Course c where name = :name"),
 		@NamedQuery(name="Course.findLikeName", query="select c from Course c where name like :name")
 })
-public class Course extends Rateable implements Serializable {
+public class Course implements Serializable {
+
+	@Id
+	@GeneratedValue
+	@Column(name = "id") Integer id;
 
 	private static final long serialVersionUID = -1591302474273896650L;
 	
@@ -31,6 +35,14 @@ public class Course extends Rateable implements Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
 	private List<Section> sections;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

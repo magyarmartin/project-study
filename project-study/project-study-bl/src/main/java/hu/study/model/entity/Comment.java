@@ -35,6 +35,10 @@ public class Comment implements Serializable {
 	@JoinColumn(name = "target")
 	private Lesson target;
 
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
 	public Integer getId() {
 		return id;
 	}

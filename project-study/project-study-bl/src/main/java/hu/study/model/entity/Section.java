@@ -7,9 +7,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "SECTION")
-public class Section extends Rateable implements Serializable {
+public class Section implements Serializable {
 
 	private static final long serialVersionUID = -371066170686399849L;
+
+	@Id
+	@GeneratedValue
+	@Column(name = "id") Integer id;
 	
 	@Column(name = "name", length = 30)
 	private String name;
@@ -26,6 +30,14 @@ public class Section extends Rateable implements Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "baseSection")
 	private List<Lesson> lessons;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

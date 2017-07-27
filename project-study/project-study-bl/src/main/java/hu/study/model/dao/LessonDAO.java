@@ -1,6 +1,5 @@
 package hu.study.model.dao;
 
-import hu.study.model.entity.Comment;
 import hu.study.model.entity.Lesson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +9,7 @@ import java.sql.Date;
 import java.util.Optional;
 
 /**
- * Created by martin4955 on 2017. 06. 06..
+ * DAO object for {@link Lesson}
  */
 public class LessonDAO extends BasicDAO<Lesson> {
 

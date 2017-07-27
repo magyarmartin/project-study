@@ -3,3 +3,11 @@ insert into USER(id, email, password, instructor) values(-2, 'bar@foo.com', 'asd
 insert into COURSE(id, name) VALUES (-1, 'Coding 101');
 insert into COURSE(id, name) VALUES (-2, 'Coding 102');
 insert into COURSE(id, name) VALUES (-3, 'Course to delete');
+insert into COMMENT(id, content) VALUES (-1, 'Con');
+insert into COMMENT(id, content) VALUES (-2, 'Con2');
+insert into LESSON(id, content_text) VALUES (-1, 'Con');
+insert into LESSON(id, content_text) VALUES (-2, 'Con2');
+insert into RATING(id, description, score) VALUES (-1, 'Con', 3);
+insert into RATING(id, description, score) VALUES (-2, 'Con2', 4);
+insert into SECTION(id, description) VALUES (-1, 'Con');
+insert into SECTION(id, description) VALUES (-2, 'Con2');

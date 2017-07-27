@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>project-study</groupId>
+  <artifactId>project-study-ear</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>ear</packaging>
+  
+  <parent>
+	<groupId>project-study</groupId>
+	<artifactId>project-study</artifactId>
+	<version>1.0-SNAPSHOT</version>
+  </parent>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>hu.magyarm.prostu</groupId>
+  		<artifactId>project-study-bl</artifactId>
+  		<version>1.0-SNAPSHOT</version>
+  	</dependency>
+	<dependency>
+  		<groupId>hu.magyarm.prostu</groupId>
+  		<artifactId>project-study-if</artifactId>
+  		<version>1.0-SNAPSHOT</version>
+  	</dependency>
+	<dependency>
+  		<groupId>hu.magyarm.prostu</groupId>
+  		<artifactId>project-study-ejb</artifactId>
+  		<version>1.0-SNAPSHOT</version>
+		<type>ejb</type>
+  	</dependency>
+	<dependency>
+  		<groupId>hu.magyarm.prostu</groupId>
+  		<artifactId>project-study-rest</artifactId>
+  		<version>1.0-SNAPSHOT</version>
+		<type>war</type>
+  	</dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-ear-plugin</artifactId>
+        <configuration>
+           <version>6</version>
+		  <defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir>
+          <modules>
+			<webModule>
+              <groupId>hu.magyarm.prostu</groupId>
+              <artifactId>project-study-rest</artifactId>
+              <contextRoot>/projectstudy</contextRoot>
+			</webModule>
+           <ejbModule>
+              <groupId>hu.magyarm.prostu</groupId>
+              <artifactId>project-study-ejb</artifactId>
+            </ejbModule>
+          </modules>
+          <displayName>My Ear Name displayed in the App Server</displayName>
+          <!-- If I want maven to generate the application.xml, set this to true -->
+          <generateApplicationXml>true</generateApplicationXml>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+    <finalName>project-study</finalName>
+  </build>
+  
+</project>

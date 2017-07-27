@@ -2,29 +2,48 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>project-study</groupId>
   <artifactId>project-study</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>ear</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
   
   <dependencies>
-  	<dependency>
-  		<groupId>hu.magyarm.prostu</groupId>
-  		<artifactId>project-study-bl</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
+	<!-- External -->
+	<dependency>
+    	<groupId>javax</groupId>
+    	<artifactId>javaee-api</artifactId>
+    	<version>7.0</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+    	<groupId>org.apache.logging.log4j</groupId>
+    	<artifactId>log4j-api</artifactId>
+    	<version>2.8.2</version>
   	</dependency>
+  	<dependency>
+    	<groupId>org.apache.logging.log4j</groupId>
+    	<artifactId>log4j-core</artifactId>
+        <version>2.8.2</version>
+  	</dependency>
+	<!-- Testing -->
+	<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+    </dependency>
+	<dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>java-hamcrest</artifactId>
+        <version>2.0.0.0</version>
+        <scope>test</scope>
+	</dependency>
   </dependencies>
   
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-ear-plugin</artifactId>
-        <version>2.10</version>
-        <configuration>
-          <earSourceDirectory>EarContent</earSourceDirectory>
-          <generateApplicationXml>false</generateApplicationXml>
-          <version>7</version>
-          <defaultLibBundleDir>lib</defaultLibBundleDir>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <modules>
+	<module>project-study-if</module>
+	<module>project-study-bl</module>
+	<module>project-study-ejb</module>
+	<module>project-study-rest</module>
+	<module>project-study-ear</module>
+  </modules>
+  
 </project>

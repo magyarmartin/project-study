@@ -40,8 +40,20 @@ public class Rating implements Serializable {
 	private User owner;
 	
 	@ManyToOne
-	@JoinColumn(name = "target")
-	private Rateable target;
+	@JoinColumn(name = "target_user")
+	private User targetUser;
+
+	@ManyToOne
+	@JoinColumn(name = "target_course")
+	private Course targetCourse;
+
+	@ManyToOne
+	@JoinColumn(name = "target_section")
+	private Section targetSection;
+
+	@ManyToOne
+	@JoinColumn(name = "target_lesson")
+	private Lesson targetLesson;
 
 	public Integer getId() {
 		return id;
@@ -83,18 +95,36 @@ public class Rating implements Serializable {
 		this.owner = owner;
 	}
 
-	public Rateable getTarget() {
-		return target;
+	public User getTargetUser() {
+		return targetUser;
 	}
 
-	public void setTarget(Rateable target) {
-		this.target = target;
+	public void setTargetUser(User targetUser) {
+		this.targetUser = targetUser;
 	}
 
-	@Override
-	public String toString() {
-		return "Rating [id=" + id + ", score=" + score + ", description=" + description + ", creationDate="
-				+ creationDate + ", owner=" + owner + ", target=" + target + "]";
+	public Course getTargetCourse() {
+		return targetCourse;
+	}
+
+	public void setTargetCourse(Course targetCourse) {
+		this.targetCourse = targetCourse;
+	}
+
+	public Section getTargetSection() {
+		return targetSection;
+	}
+
+	public void setTargetSection(Section targetSection) {
+		this.targetSection = targetSection;
+	}
+
+	public Lesson getTargetLesson() {
+		return targetLesson;
+	}
+
+	public void setTargetLesson(Lesson targetLesson) {
+		this.targetLesson = targetLesson;
 	}
 
 	@Override
@@ -127,4 +157,18 @@ public class Rating implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Rating{" +
+				"id=" + id +
+				", score=" + score +
+				", description='" + description + '\'' +
+				", creationDate=" + creationDate +
+				", owner=" + owner +
+				", targetUser=" + targetUser +
+				", targetCourse=" + targetCourse +
+				", targetSection=" + targetSection +
+				", targetLesson=" + targetLesson +
+				'}';
+	}
 }

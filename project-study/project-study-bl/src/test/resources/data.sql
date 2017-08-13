@@ -11,3 +11,5 @@ insert into RATING(id, description, score) VALUES (-1, 'Con', 3);
 insert into RATING(id, description, score) VALUES (-2, 'Con2', 4);
 insert into SECTION(id, description) VALUES (-1, 'Con');
 insert into SECTION(id, description) VALUES (-2, 'Con2');
+insert into TOKEN(id, token) VALUES (-1, 'asdf1234');
+insert into TOKEN(id, token) VALUES (-2, 'asd');

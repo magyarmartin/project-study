@@ -1,11 +1,16 @@
 package hu.study.helper.crypto;
 
+import hu.study.model.entity.Token;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Random;
 
 /**
  * Created by martin4955 on 2017. 06. 20..
@@ -50,6 +55,19 @@ public class PasswordGenerator {
         }
         String hashOfInput = hash(password, Base64.getDecoder().decode(saltAndPass[0]));
         return hashOfInput.equals(saltAndPass[1]);
+    }
+
+    /**
+     * Create a token with a random string as token and 7 days as expiration date.
+     * @return the token object
+     */
+    public static Token createToken() {
+        Random random = new SecureRandom();
+        String tokenString = new BigInteger(130, random).toString(32);
+        Token token = new Token(tokenString);
+        LocalDate expirationDate = LocalDate.now().plusDays(7);
+        token.setExpirationDate(java.sql.Date.valueOf(expirationDate));
+        return token;
     }
 
     private static String hash(String password, byte[] salt) throws Exception {

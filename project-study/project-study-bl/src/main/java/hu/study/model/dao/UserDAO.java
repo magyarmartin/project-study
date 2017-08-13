@@ -19,7 +19,6 @@ import hu.study.model.entity.User;
 public class UserDAO extends BasicDAO<User>{
 
 	private static final Logger LOG = LogManager.getLogger( UserDAO.class );
-	private static final String USER_BY_NAME = "SELECT COUNT(u) FROM User u WHERE ";
 
 	public UserDAO(EntityManager em) {
 		super(em, User.class);
@@ -50,9 +49,7 @@ public class UserDAO extends BasicDAO<User>{
      */
 	public void update(User user) throws IllegalArgumentException {
 		if(isUserExist(user)) {
-			em.getTransaction().begin();
 			em.merge(user);
-			em.getTransaction().commit();
 			LOG.info("User with email: " + user.getEmail() + "updated");
 		} else {
 			throw new IllegalArgumentException("The given user is not exist in the database");

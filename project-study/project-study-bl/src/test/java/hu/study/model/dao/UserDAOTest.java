@@ -82,7 +82,7 @@ public class UserDAOTest extends JPAHibernateTest {
     }
 
     @Test
-    public void shouldThrowExceptionIfTheCourseIsNotAlreadyExists() {
+    public void shouldThrowExceptionIfTheUserIsNotAlreadyExists() {
         thrown.expect(IllegalArgumentException.class);
 
         User user = new User();

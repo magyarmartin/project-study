@@ -43,9 +43,7 @@ public abstract class BasicDAO<T> implements DAO<T>{
      */
     @Override
     public void create(T object) {
-        em.getTransaction().begin();
         em.persist(object);
-        em.getTransaction().commit();
         LOG.info("Object created", object);
     }
 
@@ -56,6 +54,6 @@ public abstract class BasicDAO<T> implements DAO<T>{
      */
     @Override
     public void delete(T object) {
-        em.remove(object);
+        em.remove(em.contains(object) ? object : em.merge(object));
     }
 }

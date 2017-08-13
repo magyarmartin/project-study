@@ -6,7 +6,7 @@
     <persistence-unit name="ProStuTest" transaction-type="RESOURCE_LOCAL">
         <class>hu.study.model.entity.User</class>
         <class>hu.study.model.entity.Rating</class>
-        <class>hu.study.model.entity.Rateable</class>
+        <class>hu.study.model.entity.Token</class>
         <class>hu.study.model.entity.Course</class>
         <class>hu.study.model.entity.Section</class>
         <class>hu.study.model.entity.Lesson</class>

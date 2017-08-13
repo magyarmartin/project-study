@@ -4,7 +4,6 @@ import org.h2.tools.RunScript;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 
 import javax.persistence.EntityManager;

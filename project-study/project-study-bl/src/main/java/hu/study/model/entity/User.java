@@ -1,10 +1,10 @@
 package hu.study.model.entity;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "USER")
@@ -16,22 +16,27 @@ public class User implements Serializable  {
 	@Id
 	@GeneratedValue
 	@Column(name = "id") Integer id;
-	
+
+	@NotNull
 	@Column(name = "first_name", length = 20)
 	private String firstName;
-	
+
+	@NotNull
 	@Column(name = "last_name", length = 10)
 	private String lastName;
-	
+
+	@NotNull
 	@Column(name = "email", length = 30)
 	private String email;
-	
+
+	@NotNull
 	@Column(name = "password", length = 100)
 	private String password;
 	
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
-	
+
+	@NotNull
 	@Column(name = "instructor")
 	private boolean instructor;
 	
@@ -70,6 +75,9 @@ public class User implements Serializable  {
 	        inverseJoinColumns = @JoinColumn( name = "course_id", referencedColumnName = "id" )
 	)
 	private List<Course> startedCourses;
+
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+	private Token token;
 	
 	public User() {}
 	
@@ -212,5 +220,13 @@ public class User implements Serializable  {
 
 	public void setStartedCourses(List<Course> startedCourses) {
 		this.startedCourses = startedCourses;
+	}
+
+	public Token getToken() {
+		return token;
+	}
+
+	public void setToken(Token token) {
+		this.token = token;
 	}
 }

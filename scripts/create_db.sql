@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS public.user
 	description character varying(500),
 	instructor boolean NOT NULL,
 	registration_date date,
-	token character varying(30),
 	CONSTRAINT user_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -17,6 +16,26 @@ WITH (
 TABLESPACE pg_default;
 
 ALTER TABLE public.user
+    OWNER to postgres;
+	
+CREATE TABLE IF NOT EXISTS public.token
+(
+	id integer NOT NULL,
+	token character varying(32) NOT NULL,
+	user_id integer NOT NULL,
+	expiration_date date NOT NULL,
+	CONSTRAINT token_pkey PRIMARY KEY (id),
+	CONSTRAINT token_user_fk FOREIGN KEY (user_id)
+        REFERENCES public.user (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.token
     OWNER to postgres;
 	
 CREATE TABLE IF NOT EXISTS public.course

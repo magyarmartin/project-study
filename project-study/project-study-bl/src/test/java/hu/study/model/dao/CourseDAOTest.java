@@ -64,16 +64,12 @@ public class CourseDAOTest extends JPAHibernateTest {
         Optional<Course> foundCourse = courseDAO.find(course.getId());
         assertThat(foundCourse.isPresent(), is(true));
         assertThat(foundCourse.get().getCreationDate(), is(notNullValue()));
-
-        thrown.expect(IllegalArgumentException.class);
-        courseDAO.create(course);
     }
 
     @Test
     public void shouldThrowExceptionIfTheNameIfAlreadyExists() {
         Course course = new Course();
-        course.setName("Coding 111");
-        courseDAO.create(course);
+        course.setName("Coding 101");
 
         thrown.expect(IllegalArgumentException.class);
         courseDAO.create(course);

@@ -7,7 +7,8 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "COURSE")
+@Table(name = "COURSE",
+		indexes = {@Index(name = "course_idx",  columnList="name", unique = true)})
 @NamedQueries({
 		@NamedQuery(name="Course.findByName", query="select c from Course c where name = :name"),
 		@NamedQuery(name="Course.findLikeName", query="select c from Course c where name like :name")
@@ -90,4 +91,18 @@ public class Course implements Serializable {
 				+ creator + ", sections=" + sections + ", id=" + id + "]";
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Course)) return false;
+
+		Course course = (Course) o;
+
+		return id.equals(course.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
 }

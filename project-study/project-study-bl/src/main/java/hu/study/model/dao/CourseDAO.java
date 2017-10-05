@@ -46,10 +46,40 @@ public class CourseDAO extends BasicDAO<Course> {
      * @param name the name of the course.
      * @return a {@link List} with courses. Or an empty list when there are no courses with names like the parameter.
      */
-    public List<Course> findLikeName(final String name) {
-        Query query = em.createNamedQuery("Course.findLikeName");
+    public List<Course> findLikeName(final String name, String orderType, String direction, int limitNum) {
+        StringBuilder queryStr = new StringBuilder();
+        boolean ordering = true;
+        switch(orderType) {
+            case "name":
+                queryStr.append("SELECT c FROM Course c WHERE LOWER(name) LIKE LOWER(:name) ORDER BY c.name ");
+                break;
+            case "creation_date":
+                queryStr.append("SELECT c FROM Course c WHERE LOWER(name) LIKE LOWER(:name) ORDER BY c.creationDate ");
+                break;
+            case "ratings":
+                queryStr.append("select c from Course c left join Rating r on c.id = r.targetCourse  " +
+                        "where LOWER(name) LIKE LOWER(:name) GROUP BY c.id, c.name, c.creationDate, c.description," +
+                        " c.creator order by SUM(r.score)/COUNT(r.score) ");
+                break;
+            default:
+                queryStr.append("SELECT c FROM Course c WHERE name LIKE :name");
+                LOG.warn("The given orderType was wrong, not using ordering. OrderType: " +orderType);
+                ordering = false;
+        }
+
+        if(ordering) {
+            switch (direction) {
+                case "desc":
+                    queryStr.append("desc");
+                    break;
+                default:
+                    queryStr.append("asc");
+            }
+        }
+
+        Query query = em.createQuery(queryStr.toString());
         query.setParameter("name", "%" + name + "%");
-        return (List<Course>) query.getResultList();
+        return (List<Course>) query.setMaxResults(limitNum).getResultList();
     }
 
     /**
@@ -61,9 +91,7 @@ public class CourseDAO extends BasicDAO<Course> {
     @Override
     public void update(Course course) throws IllegalArgumentException {
         if(isCourseExist(course)) {
-            em.getTransaction().begin();
             em.merge(course);
-            em.getTransaction().commit();
             LOG.info("Course with name: " + course.getName() + "updated");
         } else {
             throw new IllegalArgumentException("The given course is not exist in the database");

@@ -1,6 +1,7 @@
 package hu.study.ejb;
 
 
+import hu.study.model.entity.Course;
 import hu.study.model.entity.Token;
 import hu.study.model.entity.User;
 
@@ -17,4 +18,6 @@ public interface UserBeanIF extends Serializable{
     Token issueToken(User user) throws Exception;
     void registerUser(User user) throws Exception;
     boolean isExistingUser(User user);
+    void deleteUser(String email);
+    void signUpCourse(String email, Course course);
 }

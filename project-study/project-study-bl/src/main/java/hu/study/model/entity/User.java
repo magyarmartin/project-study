@@ -7,7 +7,8 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USER",
+		indexes = {@Index(name = "user_idx",  columnList="email", unique = true)})
 @NamedQuery(name="User.findByEmail", query="SELECT u FROM User u WHERE u.email = :email")
 public class User implements Serializable  {
 

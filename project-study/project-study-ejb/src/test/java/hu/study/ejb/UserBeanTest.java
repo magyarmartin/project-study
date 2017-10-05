@@ -25,6 +25,6 @@ public class UserBeanTest {
         userBean.setEntityManager(entityManager);
         userBean.setUp();
     }
-    
+
 
 }

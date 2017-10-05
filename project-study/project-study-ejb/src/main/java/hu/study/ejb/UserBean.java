@@ -3,10 +3,14 @@ package hu.study.ejb;
 import hu.study.helper.crypto.PasswordGenerator;
 import hu.study.model.dao.TokenDAO;
 import hu.study.model.dao.UserDAO;
+import hu.study.model.entity.Course;
 import hu.study.model.entity.Token;
 import hu.study.model.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +23,8 @@ import java.util.Optional;
  */
 @Stateless(name = "UserEJB")
 public class UserBean implements UserBeanIF {
+
+    private static final Logger LOG = LogManager.getLogger( UserBean.class );
 
     @PersistenceContext(name = "ProStu")
     protected EntityManager entityManager;
@@ -68,6 +74,7 @@ public class UserBean implements UserBeanIF {
         user.setPassword(PasswordGenerator.getSaltedHash(user.getPassword()));
         user.setRegistrationDate(Date.valueOf(LocalDate.now()));
         userDAO.create(user);
+        LOG.info("User successfully registered. Email: " + user.getEmail() + " id: " + user.getId());
     }
 
     @Override
@@ -81,12 +88,20 @@ public class UserBean implements UserBeanIF {
     }
 
     @Override
+    public void deleteUser(String email) {
+        User user = getUserByEmail(email);
+        userDAO.delete(user);
+        LOG.info("User successfully deleted: ", user);
+    }
+
+    @Override
     public void deleteTokenIfExists(User user) {
         Token token = user.getToken();
         if(token != null) {
             user.setToken(null);
             userDAO.update(user);
             tokenDAO.delete(token);
+            LOG.info("Token deleted: ", token);
         }
     }
 
@@ -118,5 +133,16 @@ public class UserBean implements UserBeanIF {
             existingUser.setLastName(user.getLastName());
         }
         userDAO.update(existingUser);
+        LOG.info("User successfully modified. UserId: ", user.getId());
+    }
+
+    @Override
+    public void signUpCourse(String email, Course course) {
+        User user = getUserByEmail(email);
+        if(user.getStartedCourses().contains(course)) {
+            throw new IllegalArgumentException("The user already signed up for the given course");
+        }
+        user.getStartedCourses().add(course);
+        userDAO.update(user);
     }
 }

@@ -57,4 +57,17 @@ public class UserHandler {
         }
     }
 
+    @DELETE
+    @Secured({Role.STUDENT, Role.INSTRUCTOR})
+    public Response deleteUser(@Context SecurityContext securityContext) {
+        try {
+            String principalEmail = securityContext.getUserPrincipal().getName();
+            userBean.deleteUser(principalEmail);
+            return Response.ok().build();
+        } catch (Exception e) {
+            LOG.error("deleteUser", e);
+            return Response.notModified().build();
+        }
+    }
+
 }

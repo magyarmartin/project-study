@@ -59,7 +59,7 @@ public class CourseDAO extends BasicDAO<Course> {
             case "ratings":
                 queryStr.append("select c from Course c left join Rating r on c.id = r.targetCourse  " +
                         "where LOWER(name) LIKE LOWER(:name) GROUP BY c.id, c.name, c.creationDate, c.description," +
-                        " c.creator order by SUM(r.score)/COUNT(r.score) ");
+                        " c.creator order by SUM(score)/COUNT(score) ");
                 break;
             default:
                 queryStr.append("SELECT c FROM Course c WHERE name LIKE :name");

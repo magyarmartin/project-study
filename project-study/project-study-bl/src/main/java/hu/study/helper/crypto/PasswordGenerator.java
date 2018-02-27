@@ -64,7 +64,8 @@ public class PasswordGenerator {
     public static Token createToken() {
         Random random = new SecureRandom();
         String tokenString = new BigInteger(130, random).toString(32);
-        Token token = new Token(tokenString);
+        Token token = new Token();
+        token.setToken(tokenString);
         LocalDate expirationDate = LocalDate.now().plusDays(7);
         token.setExpirationDate(java.sql.Date.valueOf(expirationDate));
         return token;

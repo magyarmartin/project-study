@@ -2,6 +2,9 @@ package hu.study.model.dao;
 
 import hu.study.model.entity.Course;
 import hu.study.model.entity.Section;
+import lombok.NonNull;
+import lombok.extern.log4j.Log4j2;
+import lombok.val;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,9 +17,8 @@ import java.util.Optional;
 /**
  * DAO object for {@link Section}
  */
+@Log4j2
 public class SectionDAO extends BasicDAO<Section> {
-
-    private static final Logger LOG = LogManager.getLogger( SectionDAO.class );
 
     public SectionDAO(EntityManager em) {
         super(em, Section.class);
@@ -29,13 +31,13 @@ public class SectionDAO extends BasicDAO<Section> {
      * @throws IllegalArgumentException when the given section is not exist.
      */
     @Override
-    public void update(Section section) throws IllegalArgumentException {
-        Optional<Section> sec = find(section.getId());
+    public void update(@NonNull Section section) throws IllegalArgumentException {
+        val sec = find(section.getId());
         if(sec.isPresent()) {
             em.getTransaction().begin();
             em.merge(section);
             em.getTransaction().commit();
-            LOG.info("Section with name: " + section.getName() + "updated");
+            log.info("Section with name: " + section.getName() + "updated");
         } else {
             throw new IllegalArgumentException("The given section is not exist in the database");
         }
@@ -47,7 +49,7 @@ public class SectionDAO extends BasicDAO<Section> {
      * @param section the section to create.
      */
     @Override
-    public void create(Section section) {
+    public void create(@NonNull Section section) {
         section.setCreationDate(new Date(new java.util.Date().getTime()));
         super.create(section);
     }

@@ -1,11 +1,14 @@
 package hu.study.model.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "USER",
 		indexes = {@Index(name = "user_idx",  columnList="email", unique = true)})
@@ -79,155 +82,5 @@ public class User implements Serializable  {
 
 	@OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
 	private Token token;
-	
-	public User() {}
-	
-	public User(String email, String pwd) {
-		this.email = email;
-		this.password = pwd;
-	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public boolean isInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(boolean instructor) {
-		this.instructor = instructor;
-	}
-
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
-
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
-
-	public List<Course> getOwnCourses() {
-		return ownCourses;
-	}
-
-	public void setOwnCourses(List<Course> ownCourses) {
-		this.ownCourses = ownCourses;
-	}
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	public List<Section> getFinishedLessons() {
-		return startedLessons;
-	}
-
-	public void setFinishedLessons(List<Section> finishedLessons) {
-		this.startedLessons = finishedLessons;
-	}
-
-	public List<Comment> getFinishedSections() {
-		return startedSections;
-	}
-
-	public void setFinishedSections(List<Comment> finishedSections) {
-		this.startedSections = finishedSections;
-	}
-
-	public List<Course> getFinishedCourses() {
-		return startedCourses;
-	}
-
-	public void setFinishedCourses(List<Course> finishedCourses) {
-		this.startedCourses = finishedCourses;
-	}
-
-	public List<Rating> getRatings() {
-		return ratings;
-	}
-
-	public void setRatings(List<Rating> ratings) {
-		this.ratings = ratings;
-	}
-
-	public List<Section> getStartedLessons() {
-		return startedLessons;
-	}
-
-	public void setStartedLessons(List<Section> startedLessons) {
-		this.startedLessons = startedLessons;
-	}
-
-	public List<Comment> getStartedSections() {
-		return startedSections;
-	}
-
-	public void setStartedSections(List<Comment> startedSections) {
-		this.startedSections = startedSections;
-	}
-
-	public List<Course> getStartedCourses() {
-		return startedCourses;
-	}
-
-	public void setStartedCourses(List<Course> startedCourses) {
-		this.startedCourses = startedCourses;
-	}
-
-	public Token getToken() {
-		return token;
-	}
-
-	public void setToken(Token token) {
-		this.token = token;
-	}
 }

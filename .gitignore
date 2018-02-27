@@ -14,3 +14,5 @@ project-study/project-study-bl/target/
 project-study/project-study-bl/.settings/
 project-study/project-study-bl/.classpath
 project-study/project-study-bl/.project
+**/.idea
+**/*.iml

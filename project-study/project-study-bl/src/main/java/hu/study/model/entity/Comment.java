@@ -1,5 +1,8 @@
 package hu.study.model.entity;
 
+import lombok.Data;
+import lombok.Value;
+
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -11,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@Data
 @Entity
 @Table(name = "COMMENT")
 public class Comment implements Serializable {
@@ -34,85 +38,5 @@ public class Comment implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "target")
 	private Lesson target;
-
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Date getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
-
-	public User getOwner() {
-		return owner;
-	}
-
-	public void setOwner(User owner) {
-		this.owner = owner;
-	}
-
-	public Lesson getTarget() {
-		return target;
-	}
-
-	public void setTarget(Lesson target) {
-		this.target = target;
-	}
-
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", content=" + content + ", creationDate=" + creationDate + ", owner=" + owner
-				+ ", target=" + target + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Comment)) {
-			return false;
-		}
-		Comment other = (Comment) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
-	}
 	
 }

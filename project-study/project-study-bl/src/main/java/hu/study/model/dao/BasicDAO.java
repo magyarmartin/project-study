@@ -1,5 +1,7 @@
 package hu.study.model.dao;
 
+import lombok.NonNull;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,14 +12,13 @@ import java.util.Optional;
 /**
  * Created by martin4955 on 2017. 06. 06..
  */
-public abstract class BasicDAO<T> implements DAO<T>{
+@Log4j2
+public abstract class BasicDAO<T> implements DAO<T> {
 
-
-    private static final Logger LOG = LogManager.getLogger( CommentDAO.class );
     protected EntityManager em;
     protected Class entityClass;
 
-    public BasicDAO(EntityManager em, Class<T> entityClass) {
+    public BasicDAO(@NonNull EntityManager em, @NonNull Class<T> entityClass) {
         super();
         this.em = em;
         this.entityClass = entityClass;
@@ -42,9 +43,9 @@ public abstract class BasicDAO<T> implements DAO<T>{
      * @throws IllegalArgumentException when the given object is exist.
      */
     @Override
-    public void create(T object) {
+    public void create(@NonNull T object) {
         em.persist(object);
-        LOG.info("Object created", object);
+        log.info("Object created", object);
     }
 
     /**
@@ -53,7 +54,7 @@ public abstract class BasicDAO<T> implements DAO<T>{
      * @param object
      */
     @Override
-    public void delete(T object) {
+    public void delete(@NonNull T object) {
         em.remove(em.contains(object) ? object : em.merge(object));
     }
 }

@@ -5,6 +5,7 @@ import hu.study.model.entity.Course;
 import hu.study.model.entity.Token;
 import hu.study.model.entity.User;
 
+import javax.persistence.EntityManager;
 import java.io.Serializable;
 
 /**

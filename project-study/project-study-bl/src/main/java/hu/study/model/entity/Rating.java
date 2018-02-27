@@ -1,5 +1,7 @@
 package hu.study.model.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+@Data
 @Entity
 @Table(name = "RATING")
 public class Rating implements Serializable {
@@ -55,120 +58,4 @@ public class Rating implements Serializable {
 	@JoinColumn(name = "target_lesson")
 	private Lesson targetLesson;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Date getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
-
-	public User getOwner() {
-		return owner;
-	}
-
-	public void setOwner(User owner) {
-		this.owner = owner;
-	}
-
-	public User getTargetUser() {
-		return targetUser;
-	}
-
-	public void setTargetUser(User targetUser) {
-		this.targetUser = targetUser;
-	}
-
-	public Course getTargetCourse() {
-		return targetCourse;
-	}
-
-	public void setTargetCourse(Course targetCourse) {
-		this.targetCourse = targetCourse;
-	}
-
-	public Section getTargetSection() {
-		return targetSection;
-	}
-
-	public void setTargetSection(Section targetSection) {
-		this.targetSection = targetSection;
-	}
-
-	public Lesson getTargetLesson() {
-		return targetLesson;
-	}
-
-	public void setTargetLesson(Lesson targetLesson) {
-		this.targetLesson = targetLesson;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Rating)) {
-			return false;
-		}
-		Rating other = (Rating) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Rating{" +
-				"id=" + id +
-				", score=" + score +
-				", description='" + description + '\'' +
-				", creationDate=" + creationDate +
-				", owner=" + owner +
-				", targetUser=" + targetUser +
-				", targetCourse=" + targetCourse +
-				", targetSection=" + targetSection +
-				", targetLesson=" + targetLesson +
-				'}';
-	}
 }

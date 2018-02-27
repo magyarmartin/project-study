@@ -52,13 +52,13 @@ public class CourseDAOTest extends JPAHibernateTest {
         List<Course> courses = courseDAO.findLikeName("Something", "name", "asc", 1);
         assertThat(courses.size(), is(0));
 
-        courses = courseDAO.findLikeName("Coding", "ratings", "asc", 10);
-        assertThat(courses.size(), greaterThan(0));
-
         courses = courseDAO.findLikeName("Coding", "name", "asc", 10);
         assertThat(courses.size(), greaterThan(0));
 
         courses = courseDAO.findLikeName("Coding", "creation_date", "asc", 10);
+        assertThat(courses.size(), greaterThan(0));
+
+        courses = courseDAO.findLikeName("Coding", "ratings", "asc", 10);
         assertThat(courses.size(), greaterThan(0));
     }
 

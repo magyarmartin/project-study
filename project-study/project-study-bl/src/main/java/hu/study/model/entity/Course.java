@@ -1,11 +1,14 @@
 package hu.study.model.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "COURSE",
 		indexes = {@Index(name = "course_idx",  columnList="name", unique = true)})
@@ -37,72 +40,7 @@ public class Course implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
 	private List<Section> sections;
 
-	public Integer getId() {
-		return id;
-	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "targetCourse")
+	private List<Rating> ratings;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Date getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
-
-	public User getCreator() {
-		return creator;
-	}
-
-	public void setCreator(User creator) {
-		this.creator = creator;
-	}
-
-	public List<Section> getSections() {
-		return sections;
-	}
-
-	public void setSections(List<Section> sections) {
-		this.sections = sections;
-	}
-
-	@Override
-	public String toString() {
-		return "Course [name=" + name + ", description=" + description + ", creationDate=" + creationDate + ", creator="
-				+ creator + ", sections=" + sections + ", id=" + id + "]";
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Course)) return false;
-
-		Course course = (Course) o;
-
-		return id.equals(course.id);
-	}
-
-	@Override
-	public int hashCode() {
-		return id.hashCode();
-	}
 }

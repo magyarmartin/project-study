@@ -1,6 +1,5 @@
-package hu.study.rest.Course;
+package hu.study.rest.course;
 
-import com.sun.org.apache.regexp.internal.RE;
 import hu.study.ejb.CourseBeanIF;
 import hu.study.ejb.UserBeanIF;
 import hu.study.model.entity.Course;

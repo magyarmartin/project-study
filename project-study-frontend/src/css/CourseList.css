@@ -1,0 +1,16 @@
+#courseList {
+	background-color: white;
+	padding: 40px;
+}
+
+#courseList_sorting {
+	border-right: 1px solid #022a4c;
+}
+
+#courseList_courses_paginator {
+	align-self: flex-end;
+}
+
+.pagination {
+	padding-top: 2em;
+}

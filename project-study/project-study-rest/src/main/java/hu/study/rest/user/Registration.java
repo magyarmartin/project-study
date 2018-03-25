@@ -29,7 +29,7 @@ public class Registration {
             if(isValidPassword(user.getPassword())) {
                 if(!userBean.isExistingUser(user)) {
                     userBean.registerUser(user);
-                    return "{'response': 'ok'}";
+                    return "{\"response\": \"ok\"}";
                 } else {
                     return "{\"response\": \"existing user\"}";
                 }

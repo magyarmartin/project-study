@@ -1,0 +1,23 @@
+#header__nav {
+	height: 4em;
+	background-color: #022a4c;
+}
+
+.iconholder {
+	height: 2.4em;
+}
+
+#header__nav__menuButton {
+	width: 1.5em;
+	height: 1.5em;
+}
+
+.linkWithoutDecoration {
+	color: black;
+	text-decoration: none;
+}
+
+.linkWithoutDecoration:hover {
+	color: black;
+	text-decoration: none;
+}

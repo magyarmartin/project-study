@@ -1,0 +1,22 @@
+.courseCard {
+	width: 200px;
+	height: 250px;
+	margin: 5px;
+	-webkit-transition: margin 0.4s, width 0.4s, height 0.4s;
+	color: black;
+}
+
+.courseCard:hover {
+	width: 210px;
+	height: 260px;
+	margin: 0px;
+	
+}
+
+.linkWithoutDecoration {
+	text-decoration: none;
+}
+
+.linkWithoutDecoration:hover {
+	text-decoration: none;
+}

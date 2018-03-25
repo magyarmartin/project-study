@@ -41,9 +41,11 @@ public class Authentication {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response isValidUser(@FormParam("email") String email,
-                                @FormParam("password") String password) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response isValidUser(User userObject) {
+
+        String email = userObject.getEmail();
+        String password = userObject.getPassword();
         try {
             User user = userBean.getUserIfValid(email, password);
             userBean.deleteTokenIfExists(user);

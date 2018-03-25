@@ -1,0 +1,12 @@
+.collapsable {
+	cursor: pointer;
+}
+
+.section_open {
+	border-bottom-right-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+}
+
+.lesson {
+	border-radius: 0 !important;
+}

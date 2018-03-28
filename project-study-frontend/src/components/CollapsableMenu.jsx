@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Card, CardBody, Collapse } from 'reactstrap';
+import { Card, CardBody, Collapse } from 'reactstrap';
 import './../css/CollapsableMenu.css';
 
 class CollapsableMenu extends Component {

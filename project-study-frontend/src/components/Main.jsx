@@ -8,10 +8,12 @@ import './../css/Main.css';
 const Main = () => {
 	const items = [
 	  {
-	    src: first
+	    src: first,
+	    caption: ''
 	  },
 	  {
 	    src: second,
+	    caption: ''
 	  }
 	];
 	return (

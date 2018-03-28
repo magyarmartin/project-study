@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import Login from './Login.jsx';
-import Header from './Header.jsx';
-import Main from './Main.jsx';
-import SignIn from './SignIn.jsx';
-import CourseList from './CourseList.jsx';
-import CourseDetail from './CourseDetail.jsx';
+import Login from '../components/Login.jsx';
+import Header from '../components/Header.jsx';
+import Main from '../components/Main.jsx';
+import SignIn from '../components/SignIn.jsx';
+import CourseList from '../components/CourseList.jsx';
+import CourseDetail from '../components/CourseDetail.jsx';
+import { connect } from 'react-redux';
 import './../css/App.css';
-import 'bootstrap/dist/css/bootstrap.css'
-import { BrowserRouter, Route } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.css';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 class App extends Component {
 
   render() {
+    console.log(this.props.user)
     return (
       <BrowserRouter>
         <div className="fullWidthHeight">
@@ -29,4 +31,8 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {user: state.user};
+}
+
+export default connect(mapStateToProps)(App);

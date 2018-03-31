@@ -1,27 +1,37 @@
 package hu.study.rest.course;
 
+import java.util.List;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import hu.study.ejb.CourseBeanIF;
 import hu.study.ejb.UserBeanIF;
 import hu.study.model.entity.Course;
 import hu.study.rest.interfaces.Secured;
 import hu.study.rest.roles.Role;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import java.util.List;
-
-@Path("/api/course")
+@Path( "/api/course" )
 @RequestScoped
 public class CourseHandler {
 
-    private static final Logger LOG = LogManager.getLogger( CourseHandler.class );
+    private static final Logger LOG = LogManager.getLogger(CourseHandler.class);
 
     @Inject
     CourseBeanIF courseBean;
@@ -30,27 +40,27 @@ public class CourseHandler {
     UserBeanIF userBean;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Course getCourse(@QueryParam("name") String courseName) {
+    @Produces( MediaType.APPLICATION_JSON )
+    public Course getCourse( @QueryParam( "name" ) final String courseName ) {
         try {
             return courseBean.getCourse(courseName);
         } catch (Exception e) {
-            LOG.error("getCourse exception. Maybe the course is not exists with the given name: " +courseName, e);
+            LOG.error("getCourse exception. Maybe the course is not exists with the given name: " + courseName, e);
         }
         return null;
     }
 
     @GET
-    @Path("{limit}/{ordering}/{order}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Course> getCourses(@PathParam("limit") int limit, @PathParam("ordering") String ordering,
-                                   @PathParam("order") String order, @QueryParam("courseName") String name) {
+    @Path( "{limit}/{ordering}/{order}" )
+    @Produces( MediaType.APPLICATION_JSON )
+    public List<Course> getCourses( @PathParam( "limit" ) final int limit, @PathParam( "ordering" ) final String ordering,
+        @PathParam( "order" ) final String order, @QueryParam( "courseName" ) final String name ) {
         return courseBean.getCourses(name, limit, ordering, order);
     }
 
     @POST
-    @Secured({Role.INSTRUCTOR})
-    public Response createCourse(Course course) {
+    @Secured( { Role.INSTRUCTOR } )
+    public Response createCourse( final Course course ) {
         try {
             courseBean.createCourse(course);
             return Response.ok().build();
@@ -61,9 +71,9 @@ public class CourseHandler {
     }
 
     @POST
-    @Secured({Role.STUDENT})
-    @Path("/signUp")
-    public Response signUp(@FormParam("courseName") String courseName, @Context SecurityContext securityContext) {
+    @Secured( { Role.STUDENT } )
+    @Path( "/signUp" )
+    public Response signUp( @FormParam( "courseName" ) final String courseName, @Context final SecurityContext securityContext ) {
         try {
             Course course = courseBean.getCourse(courseName);
             userBean.signUpCourse(securityContext.getUserPrincipal().getName(), course);
@@ -75,10 +85,11 @@ public class CourseHandler {
     }
 
     @POST
-    @Path("/modify")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Secured({Role.INSTRUCTOR})
-    public Response modifyCourse(@FormParam("courseName") String courseName, Course course, @Context SecurityContext securityContext) {
+    @Path( "/modify" )
+    @Consumes( MediaType.APPLICATION_JSON )
+    @Secured( { Role.INSTRUCTOR } )
+    public Response modifyCourse( @FormParam( "courseName" ) final String courseName, final Course course,
+        @Context final SecurityContext securityContext ) {
         try {
             courseBean.checkPrivilege(securityContext.getUserPrincipal().getName(), courseName);
             courseBean.modifyCourse(courseName, course);
@@ -90,8 +101,8 @@ public class CourseHandler {
     }
 
     @DELETE
-    @Secured({Role.INSTRUCTOR})
-    public Response deleteCourse(@FormParam("courseName") String name, @Context SecurityContext securityContext) {
+    @Secured( { Role.INSTRUCTOR } )
+    public Response deleteCourse( @FormParam( "courseName" ) final String name, @Context final SecurityContext securityContext ) {
         try {
             courseBean.checkPrivilege(securityContext.getUserPrincipal().getName(), name);
             courseBean.deleteCourse(name);

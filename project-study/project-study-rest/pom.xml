@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>hu.magyarm.prostu</groupId>
-    <artifactId>project-study-rest</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+	<groupId>hu.magyarm.prostu</groupId>
+	<artifactId>project-study-rest</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
 
-    <parent>
-        <groupId>project-study</groupId>
-        <artifactId>project-study</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>project-study</groupId>
+		<artifactId>project-study</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 
-    <repositories>
-        <repository>
-            <id>JBoss repository</id>
-            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>JBoss repository</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+		</repository>
+	</repositories>
 
-    <dependencies>
-        <!-- Own -->
-        <dependency>
-            <groupId>hu.magyarm.prostu</groupId>
-            <artifactId>project-study-bl</artifactId>
-            <version>1.0-SNAPSHOT</version>
+	<dependencies>
+		<!-- Own -->
+		<dependency>
+			<groupId>hu.magyarm.prostu</groupId>
+			<artifactId>project-study-bl</artifactId>
+			<version>1.0-SNAPSHOT</version>
 			<scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>hu.magyarm.prostu</groupId>
-            <artifactId>project-study-ejb</artifactId>
-            <version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>hu.magyarm.prostu</groupId>
+			<artifactId>project-study-ejb</artifactId>
+			<version>1.0-SNAPSHOT</version>
 			<scope>provided</scope>
-        </dependency>
-        <!-- External -->
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
-            <version>2.2.1.GA</version>
-            <scope>provided</scope>
+		</dependency>
+		<!-- External -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>2.2.1.GA</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -55,20 +54,20 @@
 			<version>2.8.2</version>
 			<scope>provided</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
-    <build>
-        <finalName>RESTfulExample</finalName>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<finalName>RESTfulExample</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 
 </project>

@@ -1,15 +1,13 @@
 package hu.study.model.dao;
 
-import hu.study.model.entity.Lesson;
-import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.sql.Date;
 
 import javax.persistence.EntityManager;
-import java.sql.Date;
-import java.util.Optional;
+
+import hu.study.model.entity.Lesson;
+import lombok.NonNull;
+import lombok.val;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * DAO object for {@link Lesson}
@@ -17,7 +15,7 @@ import java.util.Optional;
 @Log4j2
 public class LessonDAO extends BasicDAO<Lesson> {
 
-    LessonDAO(EntityManager em) {
+    LessonDAO( final EntityManager em ) {
         super(em, Lesson.class);
     }
 
@@ -28,9 +26,9 @@ public class LessonDAO extends BasicDAO<Lesson> {
      * @throws IllegalArgumentException when the given object is not exist.
      */
     @Override
-    public void update(@NonNull Lesson lesson) throws IllegalArgumentException {
+    public void update( @NonNull final Lesson lesson ) throws IllegalArgumentException {
         val les = find(lesson.getId());
-        if(les.isPresent()) {
+        if ( les.isPresent() ) {
             em.getTransaction().begin();
             em.merge(lesson);
             em.getTransaction().commit();
@@ -41,7 +39,7 @@ public class LessonDAO extends BasicDAO<Lesson> {
     }
 
     @Override
-    public void create(@NonNull Lesson lesson) {
+    public void create( @NonNull final Lesson lesson ) {
         lesson.setCreationDate(new Date(new java.util.Date().getTime()));
         super.create(lesson);
     }

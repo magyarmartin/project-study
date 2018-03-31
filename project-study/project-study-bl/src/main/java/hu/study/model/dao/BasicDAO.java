@@ -1,13 +1,11 @@
 package hu.study.model.dao;
 
-import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
-import java.sql.Date;
-import java.util.Optional;
+
+import lombok.NonNull;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Created by martin4955 on 2017. 06. 06..
@@ -18,7 +16,7 @@ public abstract class BasicDAO<T> implements DAO<T> {
     protected EntityManager em;
     protected Class entityClass;
 
-    public BasicDAO(@NonNull EntityManager em, @NonNull Class<T> entityClass) {
+    public BasicDAO( @NonNull final EntityManager em, @NonNull final Class<T> entityClass ) {
         super();
         this.em = em;
         this.entityClass = entityClass;
@@ -31,7 +29,7 @@ public abstract class BasicDAO<T> implements DAO<T> {
      * @return and {@link Optional} containing the requested object, or null.
      */
     @Override
-    public Optional<T> find(int id) {
+    public Optional<T> find( final int id ) {
         T t = (T) em.find(entityClass, id);
         return Optional.ofNullable(t);
     }
@@ -43,7 +41,7 @@ public abstract class BasicDAO<T> implements DAO<T> {
      * @throws IllegalArgumentException when the given object is exist.
      */
     @Override
-    public void create(@NonNull T object) {
+    public void create( @NonNull final T object ) {
         em.persist(object);
         log.info("Object created", object);
     }
@@ -54,7 +52,7 @@ public abstract class BasicDAO<T> implements DAO<T> {
      * @param object
      */
     @Override
-    public void delete(@NonNull T object) {
+    public void delete( @NonNull final T object ) {
         em.remove(em.contains(object) ? object : em.merge(object));
     }
 }

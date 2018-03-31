@@ -1,16 +1,14 @@
 package hu.study.model.dao;
 
-import hu.study.model.entity.Token;
-import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import java.util.Optional;
+
+import hu.study.model.entity.Token;
+import lombok.NonNull;
+import lombok.val;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Created by martin4955 on 2017. 08. 12..
@@ -18,7 +16,7 @@ import java.util.Optional;
 @Log4j2
 public class TokenDAO extends BasicDAO<Token> {
 
-    public TokenDAO(EntityManager em) {
+    public TokenDAO( final EntityManager em ) {
         super(em, Token.class);
     }
 
@@ -28,7 +26,7 @@ public class TokenDAO extends BasicDAO<Token> {
      * @param tokenStr the email of the user.
      * @return and {@link Optional} containing the requested user, or null.
      */
-    public Optional<Token> find(@NonNull String tokenStr) {
+    public Optional<Token> find( @NonNull final String tokenStr ) {
         val query = em.createNamedQuery("Token.findByToken");
         query.setParameter("token", tokenStr);
         try {
@@ -46,8 +44,8 @@ public class TokenDAO extends BasicDAO<Token> {
      * @throws IllegalArgumentException when the given object is not exist.
      */
     @Override
-    public void update(@NonNull Token token) throws IllegalArgumentException {
-        if (isUserExist(token)) {
+    public void update( @NonNull final Token token ) throws IllegalArgumentException {
+        if ( isUserExist(token) ) {
             em.merge(token);
             log.info("Token with tokenstring: " + token.getToken() + "updated");
         } else {
@@ -55,7 +53,7 @@ public class TokenDAO extends BasicDAO<Token> {
         }
     }
 
-    private boolean isUserExist(@NonNull Token token) {
+    private boolean isUserExist( @NonNull final Token token ) {
         return find(token.getId()).isPresent();
     }
 }

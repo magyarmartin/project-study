@@ -1,23 +1,21 @@
 package hu.study.model.dao;
 
-import hu.study.model.entity.Comment;
-import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.sql.Date;
 
 import javax.persistence.EntityManager;
-import java.sql.Date;
-import java.util.Optional;
+
+import hu.study.model.entity.Comment;
+import lombok.NonNull;
+import lombok.val;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * DAO object for {@link Comment}
  */
 @Log4j2
-public class CommentDAO extends BasicDAO<Comment>{
+public class CommentDAO extends BasicDAO<Comment> {
 
-    public CommentDAO(EntityManager em) {
+    public CommentDAO( final EntityManager em ) {
         super(em, Comment.class);
     }
 
@@ -28,9 +26,9 @@ public class CommentDAO extends BasicDAO<Comment>{
      * @throws IllegalArgumentException when the given comment is not exist.
      */
     @Override
-    public void update(@NonNull Comment comment) throws IllegalArgumentException {
+    public void update( @NonNull final Comment comment ) throws IllegalArgumentException {
         val com = find(comment.getId());
-        if(com.isPresent()) {
+        if ( com.isPresent() ) {
             em.getTransaction().begin();
             em.merge(comment);
             em.getTransaction().commit();
@@ -47,7 +45,7 @@ public class CommentDAO extends BasicDAO<Comment>{
      * @throws IllegalArgumentException when the given comment is exist.
      */
     @Override
-    public void create(@NonNull Comment comment) {
+    public void create( @NonNull final Comment comment ) {
         comment.setCreationDate(new Date(new java.util.Date().getTime()));
         super.create(comment);
     }

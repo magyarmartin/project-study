@@ -1,9 +1,11 @@
 package hu.study.rest.filters;
 
-import hu.study.ejb.UserBeanIF;
-import hu.study.model.entity.User;
-import hu.study.rest.interfaces.Secured;
-import hu.study.rest.roles.Role;
+import java.io.IOException;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ws.rs.NotAuthorizedException;
@@ -12,12 +14,11 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import hu.study.ejb.UserBeanIF;
+import hu.study.model.entity.User;
+import hu.study.rest.interfaces.Secured;
+import hu.study.rest.roles.Role;
 
 /**
  * Created by martin4955 on 2017. 08. 13..
@@ -31,7 +32,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     UserBeanIF userBean;
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    public void filter( final ContainerRequestContext requestContext ) throws IOException {
         Class<?> resourceClass = resourceInfo.getResourceClass();
         List<Role> classRoles = extractRoles(resourceClass);
 
@@ -41,24 +42,23 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         String email = requestContext.getSecurityContext().getUserPrincipal().getName();
 
         try {
-            if (methodRoles.isEmpty()) {
+            if ( methodRoles.isEmpty() ) {
                 checkPermissions(classRoles, email);
             } else {
                 checkPermissions(methodRoles, email);
             }
 
         } catch (Exception e) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.FORBIDDEN).build());
+            requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
         }
     }
 
-    private List<Role> extractRoles(AnnotatedElement annotatedElement) {
-        if (annotatedElement == null) {
+    private List<Role> extractRoles( final AnnotatedElement annotatedElement ) {
+        if ( annotatedElement == null ) {
             return new ArrayList<Role>();
         } else {
             Secured secured = annotatedElement.getAnnotation(Secured.class);
-            if (secured == null) {
+            if ( secured == null ) {
                 return new ArrayList<Role>();
             } else {
                 Role[] allowedRoles = secured.value();
@@ -67,11 +67,11 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         }
     }
 
-    private void checkPermissions(List<Role> allowedRoles, String email) throws Exception {
+    private void checkPermissions( final List<Role> allowedRoles, final String email ) throws Exception {
         User user = userBean.getUserByEmail(email);
-        if(user.isInstructor() && allowedRoles.contains(Role.INSTRUCTOR)) {
+        if ( user.isInstructor() && allowedRoles.contains(Role.INSTRUCTOR) ) {
             return;
-        } else if(!user.isInstructor() && allowedRoles.contains(Role.STUDENT)) {
+        } else if ( !user.isInstructor() && allowedRoles.contains(Role.STUDENT) ) {
             return;
         } else {
             throw new NotAuthorizedException("Not authorized");

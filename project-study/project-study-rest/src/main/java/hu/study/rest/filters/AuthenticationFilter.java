@@ -1,10 +1,7 @@
 package hu.study.rest.filters;
 
-import hu.study.ejb.TokenBeanIF;
-import hu.study.model.entity.Token;
-import hu.study.rest.interfaces.Secured;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.io.IOException;
+import java.security.Principal;
 
 import javax.annotation.Priority;
 import javax.ejb.EJB;
@@ -16,29 +13,33 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
-import java.security.Principal;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import hu.study.ejb.TokenBeanIF;
+import hu.study.model.entity.Token;
+import hu.study.rest.interfaces.Secured;
 
 /**
  * Created by martin4955 on 2017. 08. 12..
  */
 @Secured
 @Provider
-@Priority(Priorities.AUTHENTICATION)
+@Priority( Priorities.AUTHENTICATION )
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    private static final Logger LOG = LogManager.getLogger( AuthenticationFilter.class );
+    private static final Logger LOG = LogManager.getLogger(AuthenticationFilter.class);
 
     @EJB
     TokenBeanIF tokenBean;
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    public void filter( final ContainerRequestContext requestContext ) throws IOException {
 
-        String authorizationHeader =
-                requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        if ( authorizationHeader == null || !authorizationHeader.startsWith("Bearer ") ) {
             throw new NotAuthorizedException("Authorization header must be provided");
         }
 
@@ -52,7 +53,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
     }
 
-    public void setUser(String email, ContainerRequestContext requestContext) {
+    public void setUser( final String email, final ContainerRequestContext requestContext ) {
         final SecurityContext currentSecurityContext = requestContext.getSecurityContext();
         requestContext.setSecurityContext(new SecurityContext() {
 
@@ -69,7 +70,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             }
 
             @Override
-            public boolean isUserInRole(String role) {
+            public boolean isUserInRole( final String role ) {
                 return true;
             }
 

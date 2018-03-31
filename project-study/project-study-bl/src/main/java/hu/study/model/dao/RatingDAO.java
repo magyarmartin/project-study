@@ -1,16 +1,13 @@
 package hu.study.model.dao;
 
-import hu.study.model.entity.Lesson;
-import hu.study.model.entity.Rating;
-import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.sql.Date;
 
 import javax.persistence.EntityManager;
-import java.sql.Date;
-import java.util.Optional;
+
+import hu.study.model.entity.Rating;
+import lombok.NonNull;
+import lombok.val;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * DAO object for {@link Rating}
@@ -18,7 +15,7 @@ import java.util.Optional;
 @Log4j2
 public class RatingDAO extends BasicDAO<Rating> {
 
-    RatingDAO(EntityManager em) {
+    RatingDAO( final EntityManager em ) {
         super(em, Rating.class);
     }
 
@@ -29,9 +26,9 @@ public class RatingDAO extends BasicDAO<Rating> {
      * @throws IllegalArgumentException when the given rating is not exist.
      */
     @Override
-    public void update(@NonNull Rating rating) throws IllegalArgumentException {
+    public void update( @NonNull final Rating rating ) throws IllegalArgumentException {
         val rat = find(rating.getId());
-        if(rat.isPresent()) {
+        if ( rat.isPresent() ) {
             em.getTransaction().begin();
             em.merge(rating);
             em.getTransaction().commit();
@@ -42,7 +39,7 @@ public class RatingDAO extends BasicDAO<Rating> {
     }
 
     @Override
-    public void create(@NonNull Rating rating) {
+    public void create( @NonNull final Rating rating ) {
         rating.setCreationDate(new Date(new java.util.Date().getTime()));
         super.create(rating);
     }

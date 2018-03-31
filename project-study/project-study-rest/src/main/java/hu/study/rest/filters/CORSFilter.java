@@ -1,10 +1,11 @@
 package hu.study.rest.filters;
 
+import java.io.IOException;
+
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 
 /**
  * Created by martin4955 on 2018. 03. 04..
@@ -13,8 +14,7 @@ import java.io.IOException;
 public class CORSFilter implements ContainerResponseFilter {
 
     @Override
-    public void filter(final ContainerRequestContext requestContext,
-                       final ContainerResponseContext cres) throws IOException {
+    public void filter( final ContainerRequestContext requestContext, final ContainerResponseContext cres ) throws IOException {
         cres.getHeaders().add("Access-Control-Allow-Origin", "*");
         cres.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
         cres.getHeaders().add("Access-Control-Allow-Credentials", "true");

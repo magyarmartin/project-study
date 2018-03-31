@@ -1,4 +1,4 @@
-package hu.study.rest.dto;
+package hu.study.model.dto;
 
 import lombok.Data;
 

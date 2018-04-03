@@ -1,0 +1,4 @@
+export const AUTHENTICATION = "AUTHENTICATION";
+export const REGISTRATION = "REGISTRATION";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const TOKEN_CHECK = "TOKEN_CHECK";

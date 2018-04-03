@@ -2,8 +2,13 @@ package hu.study.model.dto;
 
 import lombok.Data;
 
+/**
+ * Created by martin4955 on 2018. 03. 27..
+ */
 @Data
-public class UserDto implements BaseDto {
+public class AuthenticationDto implements BaseDto {
+
+    private String token;
 
     private String firstName;
 
@@ -11,10 +16,5 @@ public class UserDto implements BaseDto {
 
     private String email;
 
-    private String password;
-
-    private String description;
-
     private boolean instructor;
-
 }

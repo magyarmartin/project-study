@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import Validation from './../utils/Validation.js';
+import { connect } from 'react-redux';
 import { FormGroup, Input, Label,  FormFeedback, Button } from 'reactstrap';
+import { bindActionCreators } from 'redux';
+import Validation from './../utils/Validation.js';
+import registration from '../actions/registration.js';
 import './../css/SignIn.css';
 
 class SignIn extends Component {
@@ -61,74 +64,103 @@ class SignIn extends Component {
 
   onCheckboxChange(event) {
   	if ( event.target.value === 'teacher' ) {
-  		this.setState({isTeacher: true});
+      this.setState({isTeacher: true});
   	} else {
   		this.setState({isTeacher: false});
   	}
-  	this.setState({isTeacherValid: true});
+    this.setState({isTeacherValid: true});
   }
 
   validateFirstName( firstName ) {
   	if ( Validation.isEmpty( firstName ) ) {
-    	this.setState({firstNameValid: false});
+      this.setState({firstNameValid: false});
+      return false;
     } else {
-    	this.setState({firstNameValid: true});
+      this.setState({firstNameValid: true});
+      return true;
     }
   }
 
   validateLastName( lastName ) {
 	if ( Validation.isEmpty( lastName ) ) {
-    	this.setState({lastNameValid: false});
+      this.setState({lastNameValid: false});
+      return false;
     } else {
-    	this.setState({lastNameValid: true});
+      this.setState({lastNameValid: true});
+      return true;
     }
   }
 
   validateEmail( email ) {
   	if ( Validation.isEmpty(email) ) {
     	this.setState({emailValid: false});
-    	this.setState({emailError: 'The email should be not empty'});
+      this.setState({emailError: 'The email should be not empty'});
     } else if ( !Validation.isValidEmail(email) ) {
 		this.setState({emailValid: false});
-    	this.setState({emailError: 'This is not a valid email'});
+      this.setState({emailError: 'This is not a valid email'});
     } else {
-    	this.setState({emailValid: true});
+      this.setState({emailValid: true});
+      return true;
     }
+    return false;
   }
 
   validatePassworld( password ) {
   	if ( Validation.isShorterThan( password, 6 ) ) {
-    	this.setState({passwordValid: false});
+      this.setState({passwordValid: false});
+      return false;
     } else {
-    	this.setState({passwordValid: true});
+      this.setState({passwordValid: true});
+      return true;
     }
   }
 
   validatePassworldConf( passwordConf ) {
   	if ( !Validation.isTheSame( passwordConf, this.state.password ) ) {
-    	this.setState({passwordConfValid: false});
+      this.setState({passwordConfValid: false});
+      return false;
     } else {
-    	this.setState({passwordConfValid: true});
+      this.setState({passwordConfValid: true});
+      return true;
     }
   }
 
   validateAll() {
-  	this.validateFirstName( this.state.firstName );
-  	this.validateLastName( this.state.lastName );
-  	this.validateEmail( this.state.email );
-  	this.validatePassworld( this.state.password );
-  	this.validatePassworldConf( this.state.passwordConf );
-  	console.log(this.state.isTeacher === undefined )
-  	if ( this.state.isTeacher === undefined ) {
+    let isTeacherValid = false;
+    if ( this.state.isTeacher === undefined ) {
   		this.setState({isTeacherValid: false});
   	} else {
-  		this.setState({isTeacherValid: true});
-  	}
+      this.setState({isTeacherValid: true});
+      isTeacherValid = true;
+    }
+    let isFirstNameValid = this.validateFirstName( this.state.firstName );
+    let isLastNameValid = this.validateLastName( this.state.lastName );
+    let isEmailValid = this.validateEmail( this.state.email );
+    let isPasswordValid = this.validatePassworld( this.state.password );
+    let isPasswordConfValid = this.validatePassworldConf( this.state.passwordConf );
+
+  	return isFirstNameValid
+      && isLastNameValid
+      && isEmailValid
+      && isPasswordValid
+      && isPasswordConfValid
+      && isTeacherValid;
   }
 
   onSubmit(event) {
   	event.preventDefault();
-  	this.validateAll();
+    if(this.validateAll()) {
+      registration({
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        password: this.state.password,
+        instructor: this.state.isTeacher
+      });
+      console.log('sent')
+    } else {
+      console.log('not')
+    }
   }
 
   render() {
@@ -139,27 +171,27 @@ class SignIn extends Component {
             <FormGroup>
               <Label for="input_firstName">First name:</Label>
               <Input id="input_firstName" onChange={this.onFirstNameChange.bind(this)} invalid={!this.state.firstNameValid}/>
-              {this.state.firstNameValid ? '' : <FormFeedback invalid>{this.state.firstNameError}</FormFeedback>}
+              {this.state.firstNameValid ? '' : <FormFeedback invalid="true">{this.state.firstNameError}</FormFeedback>}
             </FormGroup>
             <FormGroup>
               <Label for="input_lastname">Last name:</Label>
               <Input id="input_lastname" onChange={this.onLastNameChange.bind(this)} invalid={!this.state.lastNameValid}/>
-              {this.state.lastNameValid ? '' : <FormFeedback invalid>{this.state.lastNameError}</FormFeedback>}
+              {this.state.lastNameValid ? '' : <FormFeedback invalid="true">{this.state.lastNameError}</FormFeedback>}
             </FormGroup>
             <FormGroup>
               <Label for="input_email">Email:</Label>
               <Input id="input_email" type="email" onChange={this.onEmailChange.bind(this)} invalid={!this.state.emailValid}/>
-              {this.state.emailValid ? '' : <FormFeedback invalid>{this.state.emailError}</FormFeedback>}
+              {this.state.emailValid ? '' : <FormFeedback invalid="true">{this.state.emailError}</FormFeedback>}
             </FormGroup>
             <FormGroup>
               <Label for="input_pwd">Password:</Label>
               <Input id="input_pwd" type="password" onChange={this.onPasswordChange.bind(this)} invalid={!this.state.passwordValid}/>
-              {this.state.passwordValid ? '' : <FormFeedback invalid>{this.state.passwordError}</FormFeedback>}
+              {this.state.passwordValid ? '' : <FormFeedback invalid="true">{this.state.passwordError}</FormFeedback>}
             </FormGroup>
             <FormGroup>
               <Label for="input_pwd_conf">Password confirmation:</Label>
               <Input id="input_pwd_conf" type="password" onChange={this.onPasswordConfChange.bind(this)} invalid={!this.state.passwordConfValid}/>
-              {this.state.passwordConfValid ? '' : <FormFeedback invalid>{this.state.passwordConfError}</FormFeedback>}
+              {this.state.passwordConfValid ? '' : <FormFeedback invalid="true">{this.state.passwordConfError}</FormFeedback>}
             </FormGroup>
 	          <FormGroup>
 	            <label htmlFor="input_pwd_conf">Are you a teacher or a student?</label>
@@ -171,7 +203,7 @@ class SignIn extends Component {
 				        <input type="radio" id="customRadio2" name="customRadio" className={`custom-control-input ${this.state.isTeacherValid ? '' : 'is-invalid'}`} value="student" onChange={this.onCheckboxChange.bind(this)}/>
 				        <label className="custom-control-label" htmlFor="customRadio2">Student</label>
 				      </div>
-              {this.state.isTeacherValid ? '' : <FormFeedback invalid>{this.state.isTeacherError}</FormFeedback>}
+              {this.state.isTeacherValid ? '' : <FormFeedback invalid="true">{this.state.isTeacherError}</FormFeedback>}
 	          </FormGroup>
 	          <div className="form-group">
               <Button type="submit" onClick={this.onSubmit.bind(this)} color="primary">Submit</Button>
@@ -182,4 +214,8 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ registration: registration }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(SignIn);

@@ -14,8 +14,13 @@ import org.apache.logging.log4j.Logger;
 
 import hu.study.ejb.TokenBeanIF;
 import hu.study.ejb.UserBeanIF;
+import hu.study.model.dto.BaseDto;
 import hu.study.model.entity.Token;
 import hu.study.model.entity.User;
+import hu.study.model.exception.AuthenticationException;
+import hu.study.model.mapper.AuthenticationMapper;
+import hu.study.rest.response.ServerResponse;
+import hu.study.rest.response.Status;
 
 @Path( "/api/auth" )
 @RequestScoped
@@ -40,13 +45,14 @@ public class Authentication {
             User user = userBean.getUserIfValid(email, password);
             userBean.deleteTokenIfExists(user);
             Token token = userBean.issueToken(user);
-            return Response.ok(token.getToken()).build();
-        } catch (IllegalStateException e) {
+            BaseDto auth = AuthenticationMapper.INSTANCE.userAndTokenToAuthenticationDto(user, token);
+            return Response.ok(new ServerResponse(Status.OK, auth)).build();
+        } catch (AuthenticationException e) {
             LOG.info("Wrong user credidentals", e);
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+            return Response.ok(new ServerResponse(Status.INVALID)).build();
         } catch (Exception e) {
             LOG.error("Error isValidUser: ", e);
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+            return Response.ok(new ServerResponse(Status.ERROR)).build();
         }
     }
 

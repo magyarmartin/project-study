@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import { FormGroup, Input, Label, Button } from 'reactstrap';
+import { FormGroup, Input, Label, Button, FormFeedback } from 'reactstrap';
 import { bindActionCreators } from 'redux';
+import { Redirect } from 'react-router-dom';
 import auth from '../actions/auth.js';
+import storeToken from '../actions/storeToken.js';
 import { connect } from 'react-redux';
 import './../css/Login.css';
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
+    console.log(history)
 
     this.state = {
       authenticated: false,
@@ -40,14 +44,23 @@ class Login extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.auth({email: this.state.email, password: this.state.password})
+    this.props.auth({email: this.state.email, password: this.state.password});
   }
 
   render() {
+    if(this.props.user.authenticated) {
+      console.log('asdasdsa')
+      storeToken(this.props.user.token);
+      return <Redirect to="/" push />
+    }
+
     return (
       <div className="fullWidthHeight d-flex justify-content-center align-items-center">
         <form id="loginForm">
           <h1>Login</h1>
+          {this.props.user.authenticated === false ? <FormFeedback invalid="true">Wrong username or password</FormFeedback> : ''}
+          {this.props.user.error ? <FormFeedback invalid="true">Some error happend! Please try it later or contact an administrator!</FormFeedback> : ''}
+
           <FormGroup>
             <Label for="input_email">Email:</Label>
             <Input id="input_email" onChange={this.onEmailChange.bind(this)}/>
@@ -66,7 +79,14 @@ class Login extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ auth: auth }, dispatch);
+  return bindActionCreators({
+    auth: auth,
+    storeToken: storeToken
+  }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+function mapStateToProps(state) {
+  return {user: state.user};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
-import Login from '../components/Login.jsx';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import Login from './Login.jsx';
 import Header from '../components/Header.jsx';
 import Main from '../components/Main.jsx';
-import SignIn from '../components/SignIn.jsx';
+import SignIn from './SignIn.jsx';
 import CourseList from '../components/CourseList.jsx';
 import CourseDetail from '../components/CourseDetail.jsx';
-import { connect } from 'react-redux';
+import checkToken from '../actions/checkToken.js';
 import './../css/App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { BrowserRouter, Route } from 'react-router-dom';
 
 class App extends Component {
 
   render() {
-    console.log(this.props.user)
+    if(!this.props.user.authenticated && !this.props.tokenChecked) {
+      console.log('check')
+    }
+
     return (
       <BrowserRouter>
         <div className="fullWidthHeight">
@@ -32,7 +37,14 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  return {user: state.user};
+  return {
+    user: state.user,
+    tokenChecked: state.tokenChecked
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({checkToken: ''}, dispatch);
 }
 
 export default connect(mapStateToProps)(App);

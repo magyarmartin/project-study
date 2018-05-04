@@ -1,9 +1,11 @@
 import { TOKEN_CHECK } from  '../types/EventTypes';
 
-export default function(state = null, event) {
+let defaultState = {checked: false, isFetching: false}
+
+export default function(state = defaultState, event) {
     switch (event.type) {
         case TOKEN_CHECK:
-            return event.payload;
+            return {checked: event.checked, isFetching: event.fetching};
         default:
             return state;
     };

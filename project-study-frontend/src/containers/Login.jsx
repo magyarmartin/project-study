@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormGroup, Input, Label, Button, FormFeedback } from 'reactstrap';
 import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router-dom';
-import auth from '../actions/auth.js';
+import login from '../actions/auth.js';
 import storeToken from '../actions/storeToken.js';
 import { connect } from 'react-redux';
 import './../css/Login.css';
@@ -10,8 +10,6 @@ import './../css/Login.css';
 class Login extends Component {
   constructor(props) {
     super(props);
-
-    console.log(history)
 
     this.state = {
       authenticated: false,
@@ -49,7 +47,6 @@ class Login extends Component {
 
   render() {
     if(this.props.user.authenticated) {
-      console.log('asdasdsa')
       storeToken(this.props.user.token);
       return <Redirect to="/" push />
     }
@@ -80,7 +77,7 @@ class Login extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    auth: auth,
+    auth: login,
     storeToken: storeToken
   }, dispatch);
 }

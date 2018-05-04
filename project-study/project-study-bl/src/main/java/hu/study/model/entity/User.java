@@ -19,9 +19,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table( name = "USER", indexes = { @Index( name = "user_idx", columnList = "email", unique = true ) } )
 @NamedQuery( name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email" )

@@ -12,15 +12,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table( name = "TOKEN" )
 @NamedQuery( name = "Token.findByToken", query = "SELECT t FROM Token t WHERE t.token = :token" )
 public class Token implements Serializable {
-
-    public Token() {}
 
     @Id
     @GeneratedValue

@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import hu.study.model.dto.UserWIthPasswordDto;
+import hu.study.model.mapper.UserWithPasswordMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,9 +33,9 @@ public class Registration {
     @POST
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
-    public Response registration( final UserDto userDto ) {
+    public Response registration( final UserWIthPasswordDto userDto ) {
         try {
-            User user = UserMapper.INSTANCE.userDtoToUser(userDto);
+            User user = UserWithPasswordMapper.INSTANCE.userWithPasswordDtoToUser(userDto);
             if ( isValidPassword(user.getPassword()) ) {
                 if ( !userBean.isExistingUser(user) ) {
                     userBean.registerUser(user);

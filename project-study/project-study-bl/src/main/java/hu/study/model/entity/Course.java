@@ -17,9 +17,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table( name = "COURSE", indexes = { @Index( name = "course_idx", columnList = "name", unique = true ) } )
 @NamedQueries( { @NamedQuery( name = "Course.findByName", query = "select c from Course c where name = :name" ),

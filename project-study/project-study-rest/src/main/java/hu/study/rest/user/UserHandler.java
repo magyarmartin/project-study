@@ -14,6 +14,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import hu.study.model.dto.UserWIthPasswordDto;
+import hu.study.model.mapper.UserWithPasswordMapper;
+import hu.study.rest.response.ServerResponse;
+import hu.study.rest.response.Status;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,14 +57,15 @@ public class UserHandler {
     @Secured( { Role.STUDENT, Role.INSTRUCTOR } )
     @Consumes( MediaType.APPLICATION_JSON )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response modifyUser( final User user, @Context final SecurityContext securityContext ) {
+    public Response modifyUser( final UserWIthPasswordDto userDto, @Context final SecurityContext securityContext ) {
         try {
+            User user = UserWithPasswordMapper.INSTANCE.userWithPasswordDtoToUser(userDto);
             String principalEmail = securityContext.getUserPrincipal().getName();
             userBean.modifyUser(user, principalEmail);
-            return Response.ok().build();
+            return Response.ok(new ServerResponse( Status.OK)).build();
         } catch (Exception e) {
             LOG.error("modifyUser error", e);
-            return Response.notModified().build();
+            return Response.ok(new ServerResponse(Status.ERROR)).build();
         }
     }
 

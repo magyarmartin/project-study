@@ -20,6 +20,6 @@ public interface AuthenticationMapper {
     AuthenticationMapper INSTANCE = Mappers.getMapper(AuthenticationMapper.class);
 
     @Mapping( source = "token.token", target = "token" )
-    AuthenticationDto userAndTokenToAuthenticationDto( User user, Token token );
+    AuthenticationDto userAndTokenToAuthenticationDto( final User user, final Token token );
 
 }

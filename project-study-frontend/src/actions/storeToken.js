@@ -4,7 +4,6 @@ export default function(token) {
     let payload = 'OK';
     try {
         window.localStorage.setItem('pro-stu-token', token);
-        console.log('stored')
     } catch(err) {
         payload = 'ERROR';
     }

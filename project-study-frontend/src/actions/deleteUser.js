@@ -1,39 +1,38 @@
-import { MODIFY_USER_START, MODIFY_USER_SUCCESS, MODIFY_USER_ERROR, CHANGED_FLAG } from  '../types/EventTypes';
+import { DELETE_USER_START, DELETE_USER_SUCCESS, DELETE_USER_ERROR } from  '../types/EventTypes';
 import fetch from 'cross-fetch';
 
 function startModification() {
   return {
-    type: MODIFY_USER_START
+    type: DELETE_USER_START
   }
 }
 
 function finishModification(json) {
   if(json.status === 'OK') {
     return {
-      type: MODIFY_USER_SUCCESS,
+      type: DELETE_USER_SUCCESS,
       payload: json
     }
   } else {
     return {
-      type: MODIFY_USER_ERROR,
+      type: DELETE_USER_ERROR,
       payload: json
     }
   }
 }
 
-export function modifyUserData(user, token) {
+export function deleteUser(token) {
   return function (dispatch) {
     dispatch(startModification());
       
     fetch('http://localhost:8080/projectstudy/api/user', {
-      body: JSON.stringify(user),
       cache: 'no-cache',
       credentials: 'same-origin',
       headers: {
         'content-type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      method: 'POST',
+      method: 'DELETE',
       mode: 'cors',
       redirect: 'follow',
       referrer: 'no-referrer',
@@ -44,11 +43,4 @@ export function modifyUserData(user, token) {
       json => dispatch(finishModification(json))
     )
   }   
-}
-
-export function setModificationFlag(flag) {
-  return {
-    type: CHANGED_FLAG,
-    payload: flag
-  }
 }

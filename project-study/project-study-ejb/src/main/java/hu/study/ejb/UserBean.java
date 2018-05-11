@@ -116,20 +116,25 @@ public class UserBean implements UserBeanIF {
     @Override
     public void modifyUser( @NonNull final User user, @NonNull final String principalEmail ) throws Exception {
         User existingUser = getUserByEmail(principalEmail);
-        if ( !existingUser.getEmail().equals(user.getEmail()) ) {
+        String email = user.getEmail();
+        if ( email != null && !email.isEmpty() && !existingUser.getEmail().equals(email) ) {
             existingUser.setEmail(user.getEmail());
         }
-        if ( user.getPassword() != null && !PasswordGenerator.check(user.getPassword(), existingUser.getPassword()) ) {
-            existingUser.setPassword(PasswordGenerator.getSaltedHash(user.getPassword()));
+        String password = user.getPassword();
+        if ( password != null  && !password.isEmpty() && !PasswordGenerator.check(password, existingUser.getPassword()) ) {
+            existingUser.setPassword(PasswordGenerator.getSaltedHash(password));
         }
-        if ( user.getDescription() != null && !existingUser.getDescription().equals(user.getDescription()) ) {
-            existingUser.setDescription(user.getDescription());
+        String description = user.getDescription();
+        if ( description != null && !description.isEmpty() && !existingUser.getDescription().equals(description) ) {
+            existingUser.setDescription(description);
         }
-        if ( !existingUser.getFirstName().equals(user.getFirstName()) ) {
-            existingUser.setFirstName(user.getFirstName());
+        String firstName = user.getFirstName();
+        if ( firstName != null && !firstName.isEmpty() && !existingUser.getFirstName().equals(firstName) ) {
+            existingUser.setFirstName(firstName);
         }
-        if ( !existingUser.getLastName().equals(user.getLastName()) ) {
-            existingUser.setLastName(user.getLastName());
+        String lastName = user.getLastName();
+        if ( lastName != null && !lastName.isEmpty() && !existingUser.getLastName().equals(lastName) ) {
+            existingUser.setLastName(lastName);
         }
         userDAO.update(existingUser);
         log.info("User successfully modified. UserId: ", user.getId());

@@ -14,7 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import hu.study.model.dto.UserDto;
 import hu.study.model.dto.UserWIthPasswordDto;
+import hu.study.model.mapper.UserMapper;
 import hu.study.model.mapper.UserWithPasswordMapper;
 import hu.study.rest.response.ServerResponse;
 import hu.study.rest.response.Status;
@@ -62,7 +64,8 @@ public class UserHandler {
             User user = UserWithPasswordMapper.INSTANCE.userWithPasswordDtoToUser(userDto);
             String principalEmail = securityContext.getUserPrincipal().getName();
             userBean.modifyUser(user, principalEmail);
-            return Response.ok(new ServerResponse( Status.OK)).build();
+            UserDto modifiedUserDto = UserMapper.INSTANCE.userToUserDto( userBean.getUserByEmail( principalEmail ) );
+            return Response.ok(new ServerResponse( Status.OK, modifiedUserDto ) ).build();
         } catch (Exception e) {
             LOG.error("modifyUser error", e);
             return Response.ok(new ServerResponse(Status.ERROR)).build();
@@ -71,14 +74,15 @@ public class UserHandler {
 
     @DELETE
     @Secured( { Role.STUDENT, Role.INSTRUCTOR } )
+    @Produces( MediaType.APPLICATION_JSON )
     public Response deleteUser( @Context final SecurityContext securityContext ) {
         try {
             String principalEmail = securityContext.getUserPrincipal().getName();
             userBean.deleteUser(principalEmail);
-            return Response.ok().build();
+            return Response.ok(new ServerResponse( Status.OK )).build();
         } catch (Exception e) {
             LOG.error("deleteUser", e);
-            return Response.notModified().build();
+            return Response.ok(new ServerResponse( Status.ERROR )).build();
         }
     }
 

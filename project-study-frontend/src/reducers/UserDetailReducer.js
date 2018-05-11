@@ -1,5 +1,5 @@
 import { FIRSTNAME_CHANGED, LASTNAME_CHANGED, EMAIL_CHANGED, PASSWORD_CHANGED, PASSWORD_CONF_CHANGED, IS_TEACHER_CHANGED, DESCRIPTION_CHANGED, SUBMIT,
-    REGISTRATION_START } from  '../types/EventTypes';
+    REGISTRATION_START, MODIFY_USER_START, MODAL_TOGGLE } from  '../types/EventTypes';
 
 const userDetail = {
     email: '',
@@ -19,7 +19,8 @@ const userDetail = {
     passwordConfError: 'The password confirmation should be equal the password!',
     firstNameError: 'The first name should be not empty!',
     lastNameError: 'The last name should be not empty!',
-    submited: false
+    submited: false,
+    modalOpen: false
 }
 
 export default function(state = userDetail, event) {
@@ -40,8 +41,12 @@ export default function(state = userDetail, event) {
             return Object.assign({}, state, event.payload, {submited: false});
         case SUBMIT:
             return Object.assign({}, state, {submited: true})
+        case MODIFY_USER_START:
+            return Object.assign({}, state, {submited: false})
         case REGISTRATION_START:
             return Object.assign({}, state, {submited: false})
+        case MODAL_TOGGLE:
+            return Object.assign({}, state, {modalOpen: !state.modalOpen})
         default:
             return state;
     }

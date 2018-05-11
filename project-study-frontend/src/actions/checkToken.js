@@ -1,4 +1,4 @@
-import { TOKEN_CHECK, USER_UPDATE } from  '../types/EventTypes';
+import { TOKEN_CHECK, USER_UPDATE, LOGOUT } from  '../types/EventTypes';
 import fetch from 'cross-fetch';
 
 function checkedToken(fetching, checked) {
@@ -14,6 +14,12 @@ function updateUserData(json, token) {
 		type: USER_UPDATE,
 		payload: json.payload,
 		token: token
+	}
+}
+
+function unauthorized() {
+	return {
+		type: LOGOUT
 	}
 }
 
@@ -36,12 +42,21 @@ export default function() {
 				redirect: 'follow',
 				referrer: 'no-referrer',
 			}).then(
-				response => response.json(),
+				response => { 
+					dispatch(checkedToken(false, true));
+					if( response.status === 401) {
+						dispatch(unauthorized());
+						return null;
+					} else {
+						response.json()
+					}
+				},
 				error => console.log('An error occurred.', error)
 			).then(
 				json => {
-					dispatch(updateUserData(json, token));
-					dispatch(checkedToken(false, true));
+					if(json !== null) {
+						dispatch(updateUserData(json, token));
+					}
 				}
 			)
 		} else {

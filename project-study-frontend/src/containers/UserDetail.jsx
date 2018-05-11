@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormGroup, Input, Label,  FormFeedback, Button } from 'reactstrap';
+import { FormGroup, Input, Label,  FormFeedback, Button, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import Validation from './../utils/Validation.js';
 import registration from '../actions/registration.js';
 import login from '../actions/auth.js';
 import storeToken from '../actions/storeToken.js';
-import userDetailChanged from '../actions/userDetailChanged.js';
-import { FIRSTNAME_CHANGED, LASTNAME_CHANGED, EMAIL_CHANGED, PASSWORD_CHANGED, PASSWORD_CONF_CHANGED, IS_TEACHER_CHANGED, DESCRIPTION_CHANGED, SUBMIT} from  '../types/EventTypes';
+import { userDetailChanged, toggle } from '../actions/userDetailChanged.js';
+import { modifyUserData, setModificationFlag } from '../actions/modifyUsedData.js';
+import { deleteUser } from '../actions/deleteUser.js';
+import { FIRSTNAME_CHANGED, LASTNAME_CHANGED, EMAIL_CHANGED, PASSWORD_CHANGED, PASSWORD_CONF_CHANGED, 
+  IS_TEACHER_CHANGED, DESCRIPTION_CHANGED, SUBMIT} from  '../types/EventTypes';
 import './../css/UserDetail.css';
 
 class UserDetail extends Component {
   constructor(props) {
     super(props);
 
-    let user = this.props.user;
-    this.props.userDetailChanged({type: FIRSTNAME_CHANGED, value: user.firstName})
-    this.props.userDetailChanged({type: LASTNAME_CHANGED, value: user.lastName})
-    this.props.userDetailChanged({type: EMAIL_CHANGED, value: user.email})
+    if(!this.props.signin) {
+      let user = this.props.user;
+      this.props.userDetailChanged({type: FIRSTNAME_CHANGED, value: user.firstName})
+      this.props.userDetailChanged({type: LASTNAME_CHANGED, value: user.lastName})
+      this.props.userDetailChanged({type: EMAIL_CHANGED, value: user.email})
+    }
   }
 
   onFirstNameChange(event) {
@@ -60,10 +64,22 @@ class UserDetail extends Component {
     this.props.userDetailChanged({type: FIRSTNAME_CHANGED, value: userDetail.firstName})
     this.props.userDetailChanged({type: LASTNAME_CHANGED, value: userDetail.lastName})
     this.props.userDetailChanged({type: EMAIL_CHANGED, value: userDetail.email})
-    this.props.userDetailChanged({type: PASSWORD_CHANGED, value: userDetail.password})
-    this.props.userDetailChanged({type: PASSWORD_CONF_CHANGED, value: {passwordConf: userDetail.passwordConf, password: userDetail.password}})
+    if(this.props.signin) {
+      this.props.userDetailChanged({type: PASSWORD_CHANGED, value: userDetail.password})
+      this.props.userDetailChanged({type: PASSWORD_CONF_CHANGED, value: {passwordConf: userDetail.passwordConf, password: userDetail.password}})
+    }
     this.props.userDetailChanged({type: IS_TEACHER_CHANGED, value: userDetail.type})
+    this.props.userDetailChanged({type: DESCRIPTION_CHANGED, value: event.target.value})
     this.props.userDetailChanged({type: SUBMIT})
+  }
+
+  toggle(event) {
+    event.preventDefault();
+    this.props.toggle();
+  }
+
+  delete() {
+    this.props.deleteUser(this.props.user.token);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,11 +92,9 @@ class UserDetail extends Component {
       this.props.userDetailChanged({type: EMAIL_CHANGED, value: user.email})
     }
     if(nextProps.userDetail.submited
-        && nextProps.userDetail.firstNameValid
-        && nextProps.userDetail.lastNameValid
-        && nextProps.userDetail.emailValid
-        && nextProps.userDetail.passwordValid
-        && nextProps.userDetail.passwordConfValid) {
+      && nextProps.userDetail.firstNameValid
+      && nextProps.userDetail.lastNameValid
+      && nextProps.userDetail.emailValid) {
 
         let data = {
           firstName: nextProps.userDetail.firstName,
@@ -91,11 +105,19 @@ class UserDetail extends Component {
           description: nextProps.userDetail.description
         }
         
-        if(this.props.signin) {
+        if(this.props.signin
+          && nextProps.userDetail.passwordValid
+          && nextProps.userDetail.passwordConfValid) {
+            console.log('asd', nextProps.userDetail.submited)
           this.props.registration(data);
         } else {
-          this.props.modifyData(data);
+          this.props.modifyData(data, nextProps.user.token);
         }
+    }
+    if(nextProps.user.changed) {
+      setTimeout(() => {
+        nextProps.setModificationFlag(false);
+      }, 5000);
     }
   }
 
@@ -116,6 +138,9 @@ class UserDetail extends Component {
             </h1>
             {!this.props.signInData.error ? '' : <FormFeedback invalid="true">There wan an error during registration. Please try later.</FormFeedback>}
             {!this.props.signInData.invalid ? '' : <FormFeedback invalid="true">Your given informaions are invalid. Please fill the form again.</FormFeedback>}
+            <Alert color="success" isOpen={this.props.user.changed}>
+              Modification was successfull!
+            </Alert>    
             <FormGroup>
               <Label for="input_firstName">First name:</Label>
               <Input id="input_firstName" onChange={this.onFirstNameChange.bind(this)} value={this.props.userDetail.firstName} invalid={!this.props.userDetail.firstNameValid}/>
@@ -167,10 +192,21 @@ class UserDetail extends Component {
               <label htmlFor="input_description">Tell something about you</label>
               <Input type="textarea" name="input_description" id="input_description" value={this.props.userDetail.description} onChange={this.onDescriptionChange.bind(this)}/>
             </FormGroup> : ''}
-	          <div className="form-group">
+	          <div className="form-group d-flex justify-content-between">
               <Button type="submit" onClick={this.onSubmit.bind(this)} color="primary">Submit</Button>
+              <Button type="submit" onClick={this.toggle.bind(this)} color="primary">Delete profile</Button>
 	          </div>
 	        </form>
+          <Modal isOpen={this.props.userDetail.modalOpen} toggle={this.toggle.bind(this)} backdrop={true}>
+            <ModalHeader toggle={this.toggle.bind(this)}>Delete profile</ModalHeader>
+            <ModalBody>
+              Are you sure, you want to delete your profile?
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={this.delete.bind(this)}>Yes</Button>{' '}
+              <Button color="secondary" onClick={this.toggle.bind(this)}>No</Button>
+            </ModalFooter>
+          </Modal>
       	</div>
   	);
   }
@@ -181,7 +217,11 @@ function mapDispatchToProps(dispatch) {
     registration: registration,
     auth: login,
     storeToken: storeToken,
-    userDetailChanged: userDetailChanged }, dispatch);
+    userDetailChanged: userDetailChanged,
+    modifyData: modifyUserData,
+    setModificationFlag: setModificationFlag,
+    toggle: toggle,
+    deleteUser: deleteUser }, dispatch);
 }
 
 function mapStateToProps(state) {

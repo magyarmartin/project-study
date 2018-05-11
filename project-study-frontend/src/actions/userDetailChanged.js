@@ -1,7 +1,8 @@
-import { FIRSTNAME_CHANGED, LASTNAME_CHANGED, EMAIL_CHANGED, PASSWORD_CHANGED, PASSWORD_CONF_CHANGED, IS_TEACHER_CHANGED, DESCRIPTION_CHANGED, SUBMIT } from  '../types/EventTypes';
+import { FIRSTNAME_CHANGED, LASTNAME_CHANGED, EMAIL_CHANGED, PASSWORD_CHANGED, PASSWORD_CONF_CHANGED, 
+    IS_TEACHER_CHANGED, DESCRIPTION_CHANGED, SUBMIT, MODAL_TOGGLE } from  '../types/EventTypes';
 import Validation from './../utils/Validation.js';
 
-export default function(details) {
+export function userDetailChanged(details) {
     switch(details.type) {
         case FIRSTNAME_CHANGED:
             let firstNameValid = validateFirstName(details.value);
@@ -62,6 +63,10 @@ export default function(details) {
         case SUBMIT:
             return {type: SUBMIT}
     }
+}
+
+export function toggle() {
+    return {type: MODAL_TOGGLE}
 }
 
 function validateFirstName( firstName ) {
